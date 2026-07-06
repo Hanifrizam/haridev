@@ -3,27 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HARI DEV - AI Website Builder</title>
+<title>My Workspace - HARI DEV</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#020202;--surface:#0a0a0a;--border:rgba(255,255,255,0.08);--text:#fff;--muted:#888;--cyan:#22d3ee;--blue:#2563eb;--danger:#ef4444;--success:#22c55e;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--font-mono:'SF Mono','Fira Code','Cascadia Code',monospace}
 html{font-family:var(--font-sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{overflow-x:hidden}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}::selection{background:rgba(34,211,238,0.3)}
-
-/* Progress bar */
+body{overflow-x:hidden}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}::selection{background:rgba(34,211,238,0.3)}
 #progress{position:fixed;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,#2563eb,#22d3ee);z-index:999;transition:width .1s linear}
-
-/* Nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background:rgba(2,2,2,0.8);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo svg{width:28px;height:28px}
 .nav-logo span{font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-links{display:flex;align-items:center;gap:20px;list-style:none}
 .nav-links a{text-decoration:none;font-size:14px;color:var(--muted);transition:color .2s}
 .nav-links a:hover{color:var(--text)}
+.nav-user{font-size:13px;color:var(--muted);padding:6px 12px;background:rgba(255,255,255,0.04);border-radius:8px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .btn-nav{padding:8px 18px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
 .btn-nav-primary{background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff}
 .btn-nav-primary:hover{opacity:0.9}
@@ -37,33 +34,26 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background
 .mobile-menu a:hover{color:var(--text)}
 .mobile-menu .btn-nav{width:100%;text-align:center}
 
-/* Hero */
 .hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative}
 .hero-bg{position:absolute;top:-20%;left:-20%;width:140%;height:140%;background:radial-gradient(ellipse at 30% 50%,rgba(37,99,235,0.08),transparent 50%),radial-gradient(ellipse at 70% 50%,rgba(34,211,238,0.06),transparent 50%);pointer-events:none}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);border-radius:20px;font-size:13px;color:var(--cyan);margin-bottom:24px}
-.hero h1{font-size:clamp(40px,8vw,80px);font-weight:900;line-height:1.08;margin-bottom:20px}
+.hero h1{font-size:clamp(36px,7vw,72px);font-weight:900;line-height:1.08;margin-bottom:20px}
 .hero h1 .gradient{background:linear-gradient(135deg,#2563eb,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:clamp(16px,2vw,20px);color:var(--muted);max-width:560px;margin-bottom:36px;line-height:1.6}
-.hero-buttons{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.hero p{font-size:clamp(15px,1.8vw,18px);color:var(--muted);max-width:560px;margin-bottom:36px;line-height:1.6}
 .hero .btn-primary{padding:14px 32px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff;text-decoration:none}
 .hero .btn-primary:hover{opacity:0.9}
-.hero .btn-secondary{padding:14px 32px;border-radius:12px;border:1px solid var(--border);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;background:transparent;color:var(--text);text-decoration:none}
-.hero .btn-secondary:hover{border-color:var(--cyan)}
 
-/* Stats */
 .stats{max-width:1200px;margin:0 auto;padding:40px 24px 60px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .stat-card{text-align:center;padding:28px 16px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
 .stat-num{font-size:clamp(28px,4vw,40px);font-weight:900;background:linear-gradient(135deg,#2563eb,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .stat-label{font-size:13px;color:var(--muted);margin-top:6px}
 
-/* Section common */
 .section{max-width:1200px;margin:0 auto;padding:80px 24px}
 .section-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--cyan);margin-bottom:12px;text-align:center}
 .section h2{font-size:clamp(28px,4vw,44px);font-weight:900;text-align:center;margin-bottom:16px}
 .section h2 .gradient{background:linear-gradient(135deg,#2563eb,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .section>p{text-align:center;color:var(--muted);max-width:560px;margin:0 auto 48px;font-size:16px;line-height:1.6}
 
-/* Portfolio grid */
 .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .portfolio-card{padding:32px 24px;border-radius:16px;border:1px solid var(--border);position:relative;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s;min-height:180px;display:flex;flex-direction:column;justify-content:flex-end}
 .portfolio-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
@@ -71,51 +61,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;background
 .portfolio-card .content{position:relative;z-index:1}
 .portfolio-card .type{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
 .portfolio-card h3{font-size:20px;font-weight:700}
-.portfolio-card .status-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-top:8px;background:rgba(34,197,94,0.1);color:var(--success)}
 
-/* Tech section */
-.tech-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.tech-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
-.tech-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
-.tech-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
-.tech-card p{font-size:14px;color:var(--muted);line-height:1.7}
-
-/* Pricing */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.pricing-card{padding:36px 28px;background:var(--surface);border:1px solid var(--border);border-radius:16px;position:relative}
-.pricing-card.popular{border-color:var(--cyan);background:rgba(34,211,238,0.04)}
-.pricing-card .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;background:linear-gradient(135deg,#2563eb,#22d3ee);border-radius:20px;font-size:12px;font-weight:700}
-.pricing-card .plan-name{font-size:16px;font-weight:600;color:var(--muted);margin-bottom:8px}
-.pricing-card .price{font-size:36px;font-weight:900;margin-bottom:4px}
-.pricing-card .price span{font-size:14px;font-weight:400;color:var(--muted)}
-.pricing-card .desc{font-size:13px;color:var(--muted);margin-bottom:24px}
-.pricing-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.pricing-card ul li{font-size:14px;display:flex;align-items:center;gap:8px}
-.pricing-card ul li::before{content:'✓';color:var(--cyan);font-weight:700}
-.pricing-card .btn{padding:12px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;width:100%;text-align:center;text-decoration:none;display:block}
-.pricing-card .btn-primary{background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff}
-.pricing-card .btn-ghost{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text)}
-.pricing-card .btn:hover{opacity:0.9}
-
-/* CTA */
-.cta-wrapper{margin:0 24px;border-radius:24px;background:linear-gradient(135deg,rgba(37,99,235,0.15),rgba(34,211,238,0.1));padding:60px 40px;text-align:center;max-width:1200px;margin-left:auto;margin-right:auto}
-.cta-inner{background:var(--bg);border-radius:16px;padding:48px 32px}
-.cta-inner h2{font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:14px}
-.cta-inner p{color:var(--muted);margin-bottom:28px;font-size:15px}
-
-/* Footer */
-footer{border-top:1px solid var(--border);padding:60px 24px 30px;margin-top:80px}
-.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:40px}
-footer h4{font-size:14px;font-weight:700;margin-bottom:16px}
-footer a,footer p{font-size:13px;color:var(--muted);line-height:2;text-decoration:none;display:block}
-footer a:hover{color:var(--cyan)}
-.footer-newsletter{display:flex;gap:8px;margin-top:12px}
-.footer-newsletter input{flex:1;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none}
-.footer-newsletter input:focus{border-color:var(--cyan)}
-.footer-newsletter button{padding:10px 16px;background:linear-gradient(135deg,#2563eb,#22d3ee);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer}
-.footer-bottom{max-width:1200px;margin:30px auto 0;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
-
-/* AI Builder */
 .builder{max-width:1200px;margin:0 auto;padding:0 24px 80px}
 .builder-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
 .builder-header{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border)}
@@ -136,29 +82,58 @@ footer a:hover{color:var(--cyan)}
 .builder-log .log-line .time{color:#555;margin-right:12px}
 .builder-log .log-line .highlight{color:var(--cyan)}
 .builder-log .log-line .success{color:var(--success)}
-.builder-log .log-line .error{color:var(--danger)}
 .builder-input{display:flex;gap:10px;margin-top:16px}
 .builder-input input{flex:1;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;outline:none}
 .builder-input input:focus{border-color:var(--cyan)}
 .builder-input button{padding:12px 24px;background:linear-gradient(135deg,#2563eb,#22d3ee);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;white-space:nowrap}
 .builder-input button:disabled{opacity:0.5;cursor:not-allowed}
 
-/* Notification */
+.tech-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.tech-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.tech-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
+.tech-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.tech-card p{font-size:14px;color:var(--muted);line-height:1.7}
+
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pricing-card{padding:36px 28px;background:var(--surface);border:1px solid var(--border);border-radius:16px;position:relative}
+.pricing-card.popular{border-color:var(--cyan);background:rgba(34,211,238,0.04)}
+.pricing-card .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;background:linear-gradient(135deg,#2563eb,#22d3ee);border-radius:20px;font-size:12px;font-weight:700}
+.pricing-card .plan-name{font-size:16px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.pricing-card .price{font-size:36px;font-weight:900;margin-bottom:4px}
+.pricing-card .price span{font-size:14px;font-weight:400;color:var(--muted)}
+.pricing-card .desc{font-size:13px;color:var(--muted);margin-bottom:24px}
+.pricing-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.pricing-card ul li{font-size:14px;display:flex;align-items:center;gap:8px}
+.pricing-card ul li::before{content:'✓';color:var(--cyan);font-weight:700}
+.pricing-card .btn{padding:12px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;width:100%;text-align:center;text-decoration:none;display:block}
+.pricing-card .btn-primary{background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff}
+.pricing-card .btn-ghost{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text)}
+.pricing-card .btn:hover{opacity:0.9}
+
+.cta-wrapper{margin:0 24px;border-radius:24px;background:linear-gradient(135deg,rgba(37,99,235,0.15),rgba(34,211,238,0.1));padding:60px 40px;text-align:center;max-width:1200px;margin-left:auto;margin-right:auto}
+.cta-inner{background:var(--bg);border-radius:16px;padding:48px 32px}
+.cta-inner h2{font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:14px}
+.cta-inner p{color:var(--muted);margin-bottom:28px;font-size:15px}
+
+footer{border-top:1px solid var(--border);padding:60px 24px 30px;margin-top:80px}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:40px}
+footer h4{font-size:14px;font-weight:700;margin-bottom:16px}
+footer a,footer p{font-size:13px;color:var(--muted);line-height:2;text-decoration:none;display:block}
+footer a:hover{color:var(--cyan)}
+.footer-bottom{max-width:1200px;margin:30px auto 0;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
 #notif-container{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:8px;max-width:360px}
 .notif{padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:13px;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;animation:slideIn .3s ease}
 .notif-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
 .notif-icon.success{background:rgba(34,197,94,0.15);color:var(--success)}
 .notif-icon.info{background:rgba(34,211,238,0.15);color:var(--cyan)}
-.notif-icon.warning{background:rgba(234,179,8,0.15);color:#eab308}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 
-/* Observer animations */
 .obs,.obs-left{opacity:0;transition:opacity .6s ease,transform .6s ease}
 .obs{transform:translateY(30px)}
 .obs-left{transform:translateX(-30px)}
 .obs.show,.obs-left.show{opacity:1;transform:translate(0)}
 
-/* Responsive */
 @media(max-width:1024px){.portfolio-grid,.pricing-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){
   .nav-links{display:none}
@@ -176,9 +151,9 @@ footer a:hover{color:var(--cyan)}
 }
 @media(max-width:640px){
   .stats{grid-template-columns:repeat(2,1fr);gap:12px}
-  .hero h1{font-size:36px}
+  .hero h1{font-size:32px}
   .footer-grid{grid-template-columns:1fr}
-  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  .footer-bottom{flex-direction:column;gap:8px}
 }
 </style>
 </head>
@@ -191,15 +166,13 @@ footer a:hover{color:var(--cyan)}
       <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#lg)"/><path d="M9 16l5-5 5 5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 21V11" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#2563eb"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
       <span>HARI DEV</span>
     </a>
-    <ul class="nav-links" id="navLinks">
+    <ul class="nav-links">
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#tech">Tech</a></li>
       <li><a href="#pricing">Pricing</a></li>
-      <li id="navAdmin" style="display:none"><a href="admin.html" style="color:var(--cyan)">Admin Panel</a></li>
-      <li id="navAuth">
-        <a href="login.html" class="btn-nav btn-nav-ghost">Sign In</a>
-        <a href="login.html" class="btn-nav btn-nav-primary">Sign Up Free</a>
-      </li>
+      <li id="dashNavAdmin" style="display:none"><a href="admin.html" style="color:var(--cyan)">Admin Panel</a></li>
+      <li><span class="nav-user" id="navUserEmail"></span></li>
+      <li><button class="btn-nav btn-nav-ghost" onclick="signOut()">Sign Out</button></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -212,12 +185,9 @@ footer a:hover{color:var(--cyan)}
   <a href="#tech">Tech</a>
   <a href="#pricing">Pricing</a>
   <a href="admin.html" id="mobileAdmin" style="display:none">Admin Panel</a>
-  <a href="login.html" class="btn-nav btn-nav-ghost" id="mobileSignIn">Sign In</a>
-  <a href="login.html" class="btn-nav btn-nav-primary" id="mobileSignUp">Sign Up Free</a>
-  <button class="btn-nav btn-nav-ghost" id="mobileSignOut" style="display:none" onclick="signOut()">Sign Out</button>
+  <button class="btn-nav btn-nav-ghost" onclick="signOut()">Sign Out</button>
 </div>
 
-<!-- Hero -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-badge" id="heroBadge">⚡ AI-Powered Innovation</div>
@@ -228,19 +198,16 @@ footer a:hover{color:var(--cyan)}
   <p id="heroDesc">Describe your dream website and AI handles the rest</p>
   <div class="hero-buttons">
     <a href="#builder" class="btn-primary" id="heroCta">Start Building →</a>
-    <a href="#portfolio" class="btn-secondary">View Portfolio</a>
   </div>
 </section>
 
-<!-- Stats -->
 <div class="stats" id="statsSection">
-  <div class="stat-card obs"><div class="stat-num" data-count="0.4">0.4s</div><div class="stat-label">Avg. Build Time</div></div>
-  <div class="stat-card obs"><div class="stat-num" data-count="100">100%</div><div class="stat-label">Uptime SLA</div></div>
-  <div class="stat-card obs"><div class="stat-num" data-count="A+">A+</div><div class="stat-label">Performance Score</div></div>
-  <div class="stat-card obs"><div class="stat-num" data-count="12K">12K+</div><div class="stat-label">Sites Built</div></div>
+  <div class="stat-card obs"><div class="stat-num">0.4s</div><div class="stat-label">Avg. Build Time</div></div>
+  <div class="stat-card obs"><div class="stat-num">100%</div><div class="stat-label">Uptime SLA</div></div>
+  <div class="stat-card obs"><div class="stat-num">A+</div><div class="stat-label">Performance Score</div></div>
+  <div class="stat-card obs"><div class="stat-num">12K+</div><div class="stat-label">Sites Built</div></div>
 </div>
 
-<!-- Portfolio -->
 <section class="section" id="portfolio">
   <div class="section-label obs">Portfolio</div>
   <h2 class="obs">Recent <span class="gradient">Work</span></h2>
@@ -248,7 +215,6 @@ footer a:hover{color:var(--cyan)}
   <div class="portfolio-grid" id="portfolioGrid"></div>
 </section>
 
-<!-- AI Builder -->
 <section class="section" id="builder">
   <div class="section-label obs">AI Builder</div>
   <h2 class="obs">Describe. Build. <span class="gradient">Launch.</span></h2>
@@ -270,7 +236,7 @@ footer a:hover{color:var(--cyan)}
       <div class="builder-main">
         <div class="builder-log" id="buildLog">
           <div class="log-line"><span class="time">[system]</span> HARI DEV AI Engine v3.2.1</div>
-          <div class="log-line"><span class="time">[system]</span> Ready to build — describe your project below</div>
+          <div class="log-line"><span class="time">[system]</span> Welcome back! Ready to build.</div>
         </div>
         <div class="builder-input">
           <input type="text" id="buildInput" placeholder="E.g., Build me a modern landing page for a fintech startup...">
@@ -281,7 +247,6 @@ footer a:hover{color:var(--cyan)}
   </div>
 </div>
 
-<!-- Tech -->
 <section class="section" id="tech">
   <div class="section-label obs">Technology</div>
   <h2 class="obs">Powered by <span class="gradient">Cutting-Edge AI</span></h2>
@@ -300,7 +265,6 @@ footer a:hover{color:var(--cyan)}
   </div>
 </section>
 
-<!-- Pricing -->
 <section class="section" id="pricing">
   <div class="section-label obs">Pricing</div>
   <h2 class="obs">Choose Your <span class="gradient">Plan</span></h2>
@@ -308,16 +272,14 @@ footer a:hover{color:var(--cyan)}
   <div class="pricing-grid" id="pricingGrid"></div>
 </section>
 
-<!-- CTA -->
 <section class="cta-wrapper">
   <div class="cta-inner obs">
     <h2>Ready to Build <span class="gradient">Something Great?</span></h2>
-    <p>Join thousands of creators building with HARI DEV. No coding required.</p>
-    <a href="#builder" class="btn-primary" style="display:inline-block;padding:14px 36px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff;text-decoration:none">Start Building Free →</a>
+    <p>Join thousands of creators building with HARI DEV.</p>
+    <a href="#builder" class="btn-primary" style="display:inline-block;padding:14px 36px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#2563eb,#22d3ee);color:#fff;text-decoration:none">Start Building →</a>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
   <div class="footer-grid">
     <div>
@@ -325,29 +287,25 @@ footer a:hover{color:var(--cyan)}
         <svg viewBox="0 0 32 32" fill="none" style="width:28px;height:28px"><rect width="32" height="32" rx="8" fill="url(#lg)"/><path d="M9 16l5-5 5 5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 21V11" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
         <span style="font-size:18px;font-weight:800;background:linear-gradient(135deg,#2563eb,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">HARI DEV</span>
       </a>
-      <p style="font-size:13px;line-height:1.7">AI-powered website builder. Describe your vision, and we build it.</p>
+      <p style="font-size:13px;line-height:1.7">AI-powered website builder.</p>
     </div>
     <div>
       <h4>Product</h4>
       <a href="#builder">AI Builder</a>
       <a href="#portfolio">Portfolio</a>
       <a href="#pricing">Pricing</a>
-      <a href="#">Changelog</a>
     </div>
     <div>
       <h4>Company</h4>
       <a href="#">About</a>
       <a href="#">Blog</a>
-      <a href="#">Careers</a>
       <a href="#">Contact</a>
     </div>
     <div>
-      <h4>Stay Updated</h4>
-      <p style="font-size:13px;margin-bottom:8px">Get the latest news and updates</p>
-      <div class="footer-newsletter">
-        <input type="email" placeholder="your@email.com">
-        <button onclick="notif('info','Subscribed! (Demo)')">Subscribe</button>
-      </div>
+      <h4>Support</h4>
+      <a href="#">Documentation</a>
+      <a href="#">API Reference</a>
+      <a href="#">Status</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -361,39 +319,25 @@ footer a:hover{color:var(--cyan)}
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ===== NAV STATE =====
-let userSession = null;
-let isAdmin = false;
-
-async function initNav() {
-  const { data } = await sb.auth.getSession();
-  userSession = data.session;
-  const navAuth = document.getElementById('navAuth');
-  const mobileSignIn = document.getElementById('mobileSignIn');
-  const mobileSignUp = document.getElementById('mobileSignUp');
-  const mobileSignOut = document.getElementById('mobileSignOut');
-  const navAdmin = document.getElementById('navAdmin');
-  const mobileAdmin = document.getElementById('mobileAdmin');
-
-  if (userSession) {
-    const { data: profile } = await sb.from('profiles').select('role').eq('id', userSession.user.id).single();
-    isAdmin = profile?.role === 'admin';
-    navAuth.innerHTML = `<a href="dashboard.html" class="btn-nav btn-nav-primary">My Workspace</a>
-      <button class="btn-nav btn-nav-ghost" onclick="signOut()">Sign Out</button>`;
-    mobileSignIn.style.display = 'none';
-    mobileSignUp.style.display = 'none';
-    mobileSignOut.style.display = 'block';
-    if (isAdmin) {
-      navAdmin.style.display = 'inline';
-      mobileAdmin.style.display = 'block';
-    }
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  if (!profile || profile.status !== 'approved') {
+    await sb.auth.signOut();
+    window.location.href = 'login.html';
+    return;
   }
+  document.getElementById('navUserEmail').textContent = profile.email || session.user.email;
+  if (profile.role === 'admin') {
+    document.getElementById('dashNavAdmin').style.display = 'inline';
+    document.getElementById('mobileAdmin').style.display = 'block';
+  }
+  loadHero();
+  loadPortfolios();
+  renderPricing();
 }
-
-async function signOut() {
-  await sb.auth.signOut();
-  window.location.reload();
-}
+init();
 
 // ===== MOBILE MENU =====
 document.getElementById('hamburger').addEventListener('click', () => {
@@ -417,31 +361,28 @@ function notif(type, msg) {
   const c = document.getElementById('notif-container');
   const n = document.createElement('div');
   n.className = 'notif';
-  n.innerHTML = '<div class="notif-icon ' + type + '">' + (type === 'success' ? '✓' : type === 'warning' ? '!' : 'i') + '</div>' + msg;
+  n.innerHTML = '<div class="notif-icon ' + type + '">' + (type === 'success' ? '✓' : 'i') + '</div>' + msg;
   c.appendChild(n);
   setTimeout(() => { n.style.opacity = '0'; n.style.transition = 'opacity .3s'; setTimeout(() => n.remove(), 300); }, 3500);
 }
 
-// ===== NOTIFICATION WRAPPER FOR LINKS =====
-document.addEventListener('click', e => {
-  const a = e.target.closest('a');
-  if (a && a.getAttribute('href') === '#' && !a.closest('.builder')) {
-    e.preventDefault();
-    notif('info', 'Demo: ' + a.textContent.trim() + ' coming soon');
-  }
-});
+// ===== SIGN OUT =====
+async function signOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
 
-// ===== FETCH HERO FROM SUPABASE =====
+// ===== FETCH HERO =====
 async function loadHero() {
   try {
     const { data } = await sb.from('landing_page_content').select('*').eq('id', 1).single();
     if (data) {
-      document.getElementById('heroBadge').textContent = data.badge_text || '⚡ AI-Powered Innovation';
-      document.getElementById('heroTitle1').textContent = data.title_line1 || 'Build Your Digital';
-      document.getElementById('heroTitle2').textContent = data.title_line2 || 'Vision, Instantly';
-      document.getElementById('heroDesc').textContent = data.description || 'Describe your dream website and AI handles the rest';
+      document.getElementById('heroBadge').textContent = data.badge_text;
+      document.getElementById('heroTitle1').textContent = data.title_line1;
+      document.getElementById('heroTitle2').textContent = data.title_line2;
+      document.getElementById('heroDesc').textContent = data.description;
     }
-  } catch (e) { console.log('Using default hero'); }
+  } catch(e) {}
 }
 
 // ===== FETCH PORTFOLIOS =====
@@ -451,36 +392,33 @@ async function loadPortfolios() {
     if (data && data.length) {
       const grid = document.getElementById('portfolioGrid');
       grid.innerHTML = data.map(p => {
-        const color = p.color || 'from-blue-500/20';
-        return '<div class="portfolio-card obs" onclick="notif(\'info\',\'Demo: ' + p.title + ' details\')">' +
-          '<div class="bg" style="background:linear-gradient(135deg,' + color.replace('/20', '/15').replace('from-', '').replace('-500', '') + ',transparent)"></div>' +
-          '<div class="content"><div class="type">' + (p.type || 'Project') + '</div>' +
-          '<h3>' + p.title + '</h3>' +
-          '<div class="status-badge">Published</div></div></div>';
+        return '<div class="portfolio-card obs" onclick="notif(\'info\',\'Demo: ' + p.title + '\')">' +
+          '<div class="bg" style="background:linear-gradient(135deg,' + (p.color || 'from-blue-500/20').replace('/20','/15') + ',transparent)"></div>' +
+          '<div class="content"><div class="type">' + (p.type || 'Project') + '</div><h3>' + p.title + '</h3></div></div>';
       }).join('');
       document.querySelectorAll('#portfolioGrid .obs').forEach(el => obs.observe(el));
     }
-  } catch (e) { console.log('Using default portfolios'); }
+  } catch(e) {}
 }
 
-// ===== PRICING CARDS =====
+// ===== PRICING =====
 const plans = [
-  { name: 'Community', price: 'FREE', period: 'forever', desc: 'Perfect for getting started', popular: false, cta: 'Get Started', href: '#builder',
+  { name: 'Community', price: 'FREE', period: '', desc: 'Perfect for getting started', popular: false, cta: 'Your Current Plan',
     features: ['1 project', 'AI Builder access', 'Basic templates', 'Community support', '1GB storage'] },
-  { name: 'Developer', price: '$29', period: '/month', desc: 'For professionals and teams', popular: true, cta: 'Start Free Trial', href: '#builder',
+  { name: 'Developer', price: '$29', period: '/month', desc: 'For professionals and teams', popular: true, cta: 'Upgrade',
     features: ['Unlimited projects', 'Priority AI processing', 'Custom templates', 'Premium support', '50GB storage', 'Team collaboration'] },
-  { name: 'Enterprise', price: 'Custom', period: '', desc: 'For large organizations', popular: false, cta: 'Contact Sales', href: '#builder',
-    features: ['Everything in Developer', 'Dedicated AI instance', 'Custom integrations', '24/7 phone support', 'Unlimited storage', 'SLA guarantee'] }
+  { name: 'Enterprise', price: 'Custom', period: '', desc: 'For large organizations', popular: false, cta: 'Contact Sales',
+    features: ['Everything in Developer', 'Dedicated AI instance', 'Custom integrations', '24/7 support', 'Unlimited storage', 'SLA guarantee'] }
 ];
 function renderPricing() {
   const grid = document.getElementById('pricingGrid');
-  grid.innerHTML = plans.map((p, i) => '<div class="pricing-card obs' + (p.popular ? ' popular' : '') + '">' +
+  grid.innerHTML = plans.map(p => '<div class="pricing-card obs' + (p.popular ? ' popular' : '') + '">' +
     (p.popular ? '<div class="popular-badge">Most Popular</div>' : '') +
     '<div class="plan-name">' + p.name + '</div>' +
     '<div class="price">' + p.price + '<span>' + p.period + '</span></div>' +
     '<div class="desc">' + p.desc + '</div><ul>' +
     p.features.map(f => '<li>' + f + '</li>').join('') + '</ul>' +
-    '<a href="' + p.href + '" class="btn ' + (p.popular ? 'btn-primary' : 'btn-ghost') + '" onclick="event.preventDefault();notif(\'info\',\'Demo: ' + p.name + ' plan\')">' + p.cta + '</a></div>'
+    '<button class="btn ' + (p.popular ? 'btn-primary' : 'btn-ghost') + '" onclick="notif(\'info\',\'Demo: ' + p.name + ' plan\')">' + p.cta + '</button></div>'
   ).join('');
   document.querySelectorAll('#pricingGrid .obs').forEach(el => obs.observe(el));
 }
@@ -511,19 +449,13 @@ async function startBuild() {
   }
   log.innerHTML += '<div class="log-line" style="margin-top:8px"><span class="time">[system]</span> <span class="highlight">Deploying to preview URL...</span></div>';
   await new Promise(r => setTimeout(r, 1000));
-  log.innerHTML += '<div class="log-line"><span class="time">[system]</span> <span class="success">✓ Preview ready at: <span style="color:var(--cyan)">hari-dev.ai/preview/' + Math.random().toString(36).slice(2,8) + '</span></span></div>';
+  log.innerHTML += '<div class="log-line"><span class="time">[system]</span> <span class="success">✓ Preview ready at: hari-dev.ai/preview/' + Math.random().toString(36).slice(2,8) + '</span></div>';
   log.scrollTop = log.scrollHeight;
   btn.textContent = 'Generate →';
   btn.disabled = false;
   building = false;
   notif('success', 'Build complete! Check the log.');
 }
-
-// ===== INIT =====
-initNav();
-loadHero();
-loadPortfolios();
-renderPricing();
 </script>
 </body>
 </html>
