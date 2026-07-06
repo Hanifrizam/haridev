@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARI DEV - AI Website Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#020202;--bg2:#050505;--bg3:#0a0a0a;--text:#fff;--text2:#9CA3AF;--text3:#6B7280;--text4:#4B5563;--cyan:#06B6D4;--cyan2:#22D3EE;--blue:#2563EB;--blue2:#3B82F6;--border:rgba(255,255,255,0.05);--border2:rgba(255,255,255,0.1);--font-sans:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:rgba(6,182,212,0.3)}
+button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit}
+input,textarea,select{font-family:inherit;color:inherit;background:none;border:none;outline:none}
+.icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;vertical-align:middle}
+.icon svg{width:100%;height:100%}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+#progress-bar{position:fixed;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,var(--blue),var(--cyan));z-index:1000;transform-origin:left;transform:scaleX(0)}
+.page{display:none}
+.page.active{display:block}
+
+/* Typography */
+.text-\[10px\]{font-size:10px}.text-xs{font-size:12px}.text-sm{font-size:14px}.text-lg{font-size:18px}.text-xl{font-size:20px}.text-3xl{font-size:30px}.text-4xl{font-size:36px}.text-5xl{font-size:48px}
+.font-light{font-weight:300}.font-medium{font-weight:500}.font-bold{font-weight:700}.font-black{font-weight:900}
+.tracking-tight{letter-spacing:-0.025em}.tracking-tighter{letter-spacing:-0.05em}.tracking-widest{letter-spacing:0.2em}
+.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}
+.uppercase{text-transform:uppercase}.capitalize{text-transform:capitalize}
+.text-center{text-align:center}.text-left{text-align:left}.text-right{text-align:right}
+.font-mono{font-family:var(--font-mono)}.font-sans{font-family:var(--font-sans)}
+
+/* Colors */
+.text-white{color:#fff}.text-black{color:#000}.text-gray-400{color:var(--text2)}.text-gray-500{color:var(--text3)}.text-gray-600{color:var(--text4)}
+.text-cyan-400{color:var(--cyan2)}.text-cyan-500{color:var(--cyan)}.text-blue-400{color:var(--blue2)}.text-blue-500{color:var(--blue)}
+.text-green-400{color:#4ADE80}.text-red-400{color:#F87171}.text-yellow-400{color:#FBBF24}
+.text-white\/50{color:rgba(255,255,255,0.5)}.text-white\/40{color:rgba(255,255,255,0.4)}
+
+.bg-black{background:#000}.bg-\[#020202\]{background:var(--bg)}.bg-\[#030303\]{background:#030303}.bg-\[#050505\]{background:var(--bg2)}.bg-\[#0a0a0a\]{background:var(--bg3)}
+.bg-white{background:#fff}.bg-white\/5{background:rgba(255,255,255,0.05)}.bg-white\/10{background:rgba(255,255,255,0.1)}.bg-white\/20{background:rgba(255,255,255,0.2)}
+.bg-black\/20{background:rgba(0,0,0,0.2)}.bg-black\/40{background:rgba(0,0,0,0.4)}.bg-black\/50{background:rgba(0,0,0,0.5)}.bg-black\/80{background:rgba(0,0,0,0.8)}
+.bg-cyan-500{background:var(--cyan)}.bg-cyan-500\/5{background:rgba(6,182,212,0.05)}.bg-cyan-500\/10{background:rgba(6,182,212,0.1)}.bg-cyan-500\/20{background:rgba(6,182,212,0.2)}
+.bg-blue-500\/20{background:rgba(37,99,235,0.2)}.bg-blue-600{background:var(--blue)}.bg-blue-600\/10{background:rgba(37,99,235,0.1)}.bg-blue-600\/20{background:rgba(37,99,235,0.2)}
+.bg-green-500\/10{background:rgba(74,222,128,0.1)}.bg-green-500\/20{background:rgba(74,222,128,0.2)}
+.bg-red-500\/10{background:rgba(248,113,113,0.1)}.bg-red-500\/20{background:rgba(248,113,113,0.2)}
+.bg-yellow-500\/10{background:rgba(251,191,36,0.1)}
+
+.border{border:1px solid}.border-t{border-top:1px solid}.border-b{border-bottom:1px solid}.border-r{border-right:1px solid}.border-x{border-left:1px solid;border-right:1px solid}
+.border-white\/5{border-color:var(--border)}.border-white\/10{border-color:var(--border2)}.border-white\/20{border-color:rgba(255,255,255,0.2)}
+.border-cyan-500{border-color:var(--cyan)}.border-cyan-500\/20{border-color:rgba(6,182,212,0.2)}.border-cyan-500\/30{border-color:rgba(6,182,212,0.3)}.border-cyan-500\/50{border-color:rgba(6,182,212,0.5)}
+.border-blue-500\/30{border-color:rgba(37,99,235,0.3)}.border-green-500\/20{border-color:rgba(74,222,128,0.2)}.border-green-500\/30{border-color:rgba(74,222,128,0.3)}
+.border-red-500\/20{border-color:rgba(248,113,113,0.2)}.border-yellow-500\/20{border-color:rgba(251,191,36,0.2)}
+.rounded-lg{border-radius:8px}.rounded-xl{border-radius:12px}.rounded-2xl{border-radius:16px}.rounded-3xl{border-radius:24px}.rounded-full{border-radius:9999px}
+.rounded-\[40px\]{border-radius:40px}.rounded-\[58px\]{border-radius:58px}.rounded-\[60px\]{border-radius:60px}
+.rounded-t-lg{border-radius:8px 8px 0 0}.rounded-t-2xl{border-radius:16px 16px 0 0}.rounded-t-3xl{border-radius:24px 24px 0 0}
+
+/* Layout */
+.flex{display:flex}.inline-flex{display:inline-flex}.flex-col{flex-direction:column}.flex-1{flex:1}.flex-shrink-0{flex-shrink:0}.flex-wrap{flex-wrap:wrap}
+.items-start{align-items:flex-start}.items-center{align-items:center}.items-end{align-items:flex-end}
+.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-6{gap:24px}.gap-8{gap:32px}.gap-12{gap:48px}.gap-20{gap:80px}
+.grid{display:grid}.grid-cols-1{grid-template-columns:repeat(1,1fr)}.grid-cols-2{grid-template-columns:repeat(2,1fr)}
+
+.w-full{width:100%}.w-3{width:12px}.w-4{width:16px}.w-6{width:24px}.w-8{width:32px}.w-24{width:96px}.w-72{width:288px}.w-80{width:320px}
+.h-full{height:100%}.h-3{height:12px}.h-4{height:16px}.h-5{height:20px}.h-6{height:24px}.h-8{height:32px}.h-10{height:40px}.h-24{height:96px}.h-32{height:128px}.h-48{height:192px}.h-64{height:256px}.h-80{height:320px}
+.h-\[450px\]{height:450px}.h-screen{height:100vh}.min-h-screen{min-height:100vh}
+.max-w-xs{max-width:320px}.max-w-2xl{max-width:672px}.max-w-3xl{max-width:768px}.max-w-4xl{max-width:896px}.max-w-5xl{max-width:1024px}.max-w-6xl{max-width:1152px}.max-w-7xl{max-width:1280px}.max-w-md{max-width:448px}
+
+.p-1{padding:4px}.p-2{padding:8px}.p-3{padding:12px}.p-4{padding:16px}.p-5{padding:20px}.p-6{padding:24px}.p-8{padding:32px}.p-10{padding:40px}
+.px-2{padding-left:8px;padding-right:8px}.px-3{padding-left:12px;padding-right:12px}.px-4{padding-left:16px;padding-right:16px}.px-5{padding-left:20px;padding-right:20px}
+.px-6{padding-left:24px;padding-right:24px}.px-8{padding-left:32px;padding-right:32px}.px-10{padding-left:40px;padding-right:40px}.px-12{padding-left:48px;padding-right:48px}
+.py-1{padding-top:4px;padding-bottom:4px}.py-2{padding-top:8px;padding-bottom:8px}.py-3{padding-top:12px;padding-bottom:12px}.py-4{padding-top:16px;padding-bottom:16px}
+.py-5{padding-top:20px;padding-bottom:20px}.py-6{padding-top:24px;padding-bottom:24px}.py-8{padding-top:32px;padding-bottom:32px}
+.py-20{padding-top:80px;padding-bottom:80px}.py-32{padding-top:128px;padding-bottom:128px}
+.pt-4{padding-top:16px}.pt-8{padding-top:32px}.pt-12{padding-top:48px}.pt-32{padding-top:128px}
+.pb-0{padding-bottom:0}.pb-2{padding-bottom:8px}.pb-4{padding-bottom:16px}.pl-12{padding-left:48px}.pr-4{padding-right:16px}
+
+.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:4px}.mb-2{margin-bottom:8px}.mb-4{margin-bottom:16px}.mb-6{margin-bottom:24px}
+.mb-8{margin-bottom:32px}.mb-10{margin-bottom:40px}.mb-12{margin-bottom:48px}.mb-20{margin-bottom:80px}
+.mt-2{margin-top:8px}.mt-4{margin-top:16px}.mt-6{margin-top:24px}.mt-8{margin-top:32px}.mt-20{margin-top:80px}
+
+.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}
+.top-0{top:0}.top-6{top:24px}.top-8{top:32px}.left-0{left:0}.left-4{left:16px}.left-8{left:32px}.right-0{right:0}.right-6{right:24px}.right-10{right:40px}
+.bottom-6{bottom:24px}.inset-0{inset:0}.inset-y-0{top:0;bottom:0}
+.z-10{z-index:10}.z-50{z-index:50}.z-\[75\]{z-index:75}.z-\[80\]{z-index:80}.z-\[90\]{z-index:90}.z-\[100\]{z-index:100}
+.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.overflow-x-auto{overflow-x:auto}
+.scroll-mt-20{scroll-margin-top:80px}.scroll-mt-24{scroll-margin-top:96px}
+.pointer-events-none{pointer-events:none}.cursor-pointer{cursor:pointer}
+.col-span-1{grid-column:span 1}
+
+/* Effects */
+.backdrop-blur-md{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.backdrop-blur-lg{-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.backdrop-blur-xl{-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
+.backdrop-blur-3xl{-webkit-backdrop-filter:blur(64px);backdrop-filter:blur(64px)}
+.shadow-2xl{box-shadow:0 25px 50px -12px rgba(0,0,0,0.25)}
+.opacity-0{opacity:0}.opacity-40{opacity:0.4}.opacity-50{opacity:0.5}
+.origin-left{transform-origin:left}
+.transition-all{transition:all 0.3s ease}.transition-colors{transition:color 0.2s ease,background-color 0.2s ease,border-color 0.2s ease}
+.duration-300{transition-duration:0.3s}.duration-500{transition-duration:0.5s}
+
+.badge{display:inline-block;padding:4px 16px;border-radius:9999px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.2em}
+.badge-cyan{border:1px solid rgba(6,182,212,0.3);background:rgba(6,182,212,0.1);color:var(--cyan2)}
+.badge-green{background:rgba(74,222,128,0.1);color:#4ADE80;border:1px solid rgba(74,222,128,0.2)}
+.badge-red{background:rgba(248,113,113,0.1);color:#F87171;border:1px solid rgba(248,113,113,0.2)}
+.badge-yellow{background:rgba(251,191,36,0.1);color:#FBBF24;border:1px solid rgba(251,191,36,0.2)}
+
+.btn-primary{background:#fff;color:#000;font-weight:900;border-radius:9999px;padding:12px 40px;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s}
+.btn-primary:hover{background:var(--cyan2)}
+.btn-ghost{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9999px;padding:12px 40px;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s}
+.btn-ghost:hover{background:rgba(255,255,255,0.1)}
+.btn-cyan{background:var(--cyan);color:#000;font-weight:900;border-radius:12px;padding:16px 32px;width:100%;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-cyan:hover{background:var(--cyan2)}
+.text-gradient{background:linear-gradient(to bottom,#fff,#fff,#6B7280);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:80;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+.logo-hari{background:linear-gradient(to right,var(--blue),var(--cyan));padding:4px 12px;font-size:18px;font-weight:900;letter-spacing:-0.05em;text-transform:uppercase}
+.logo-dev{background:#fff;color:#000;padding:4px 12px;font-size:18px;font-weight:900;letter-spacing:-0.05em}
+.nav-links{display:none;gap:24px;font-size:14px;color:var(--text2)}.nav-links button:hover{color:var(--cyan2)}
+.nav-actions{display:none;align-items:center;gap:16px}
+
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:128px 24px 0}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:800px;height:500px;background:rgba(37,99,235,0.1);border-radius:50%;filter:blur(150px);pointer-events:none;max-width:100%}
+.hero-content{z-index:10;text-align:center;max-width:1024px}
+.hero-title{font-size:60px;font-weight:900;letter-spacing:-0.05em;line-height:0.9;margin-bottom:32px}
+.hero-desc{color:var(--text2);font-size:18px;max-width:768px;margin:0 auto 48px;font-weight:300;line-height:1.625}
+
+.builder{margin-top:80px;width:100%;max-width:1152px;border-top-left-radius:24px;border-top-right-radius:24px;border-top:1px solid var(--border2);border-left:1px solid var(--border2);border-right:1px solid var(--border2);background:linear-gradient(to bottom,rgba(255,255,255,0.05),transparent);padding:16px 16px 0;scroll-margin-top:96px}
+.builder-inner{background:var(--bg2);border-radius:16px 16px 0 0;border:1px solid var(--border2);overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border-bottom:0}
+.builder-header{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.builder-dots{display:flex;gap:8px}.builder-dot{width:12px;height:12px;border-radius:50%}.builder-dot.red{background:rgba(239,68,68,0.2)}.builder-dot.yellow{background:rgba(234,179,8,0.2)}.builder-dot.green{background:rgba(34,197,94,0.2)}
+.builder-url{padding:4px 16px;border-radius:4px;background:rgba(255,255,255,0.05);font-family:var(--font-mono);font-size:10px;color:var(--text3)}
+.builder-body{height:450px;display:flex}
+.builder-sidebar{display:none;width:256px;border-right:1px solid var(--border);padding:24px;background:rgba(0,0,0,0.2)}
+.builder-sidebar-label{font-size:12px;font-weight:700;color:var(--text3);margin-bottom:16px;letter-spacing:0.2em}
+.builder-sidebar-items{display:flex;flex-direction:column;gap:16px}
+.builder-sidebar-item{height:40px;background:rgba(255,255,255,0.05);border:1px solid var(--border2);border-radius:8px;cursor:pointer;transition:all 0.3s}
+.builder-sidebar-item:hover{background:rgba(6,182,212,0.2)}.builder-sidebar-item.h-24{height:96px}
+.builder-main{flex:1;padding:24px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.builder-grid-bg{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px}
+
+.stats-section{background:#030303;padding:128px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:48px}
+
+.portfolio-section{padding:128px 24px;max-width:1280px;margin:0 auto;scroll-margin-top:80px}
+.portfolio-header{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;margin-bottom:80px;gap:32px}
+.portfolio-title{font-size:36px;font-weight:900;margin-bottom:24px}
+.portfolio-desc{color:var(--text2);font-size:18px;line-height:1.625}
+.portfolio-grid{display:grid;grid-template-columns:1fr;gap:32px}
+
+.tech-section{padding:128px 24px;background:rgba(255,255,255,0.05);-webkit-backdrop-filter:blur(64px);backdrop-filter:blur(64px);position:relative;overflow:hidden;scroll-margin-top:80px}
+.tech-inner{max-width:1280px;margin:0 auto;position:relative;z-index:10}
+.tech-grid{display:grid;grid-template-columns:1fr;gap:80px;align-items:center}
+
+.pricing-section{padding:128px 24px;scroll-margin-top:80px}
+.pricing-inner{max-width:1280px;margin:0 auto}
+.pricing-title{font-size:36px;font-weight:900;margin-bottom:24px;text-transform:uppercase}
+.pricing-grid{display:grid;grid-template-columns:1fr;gap:32px}
+
+.cta-section{padding:128px 24px}
+.cta-wrapper{max-width:1280px;margin:0 auto;border-radius:60px;background:linear-gradient(to bottom right,var(--blue),var(--cyan));padding:4px;overflow:hidden}
+.cta-inner{background:#000;border-radius:58px;padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:rgba(6,182,212,0.2);filter:blur(100px);border-radius:50%}
+.cta-title{font-size:48px;font-weight:900;margin-bottom:32px;line-height:0.9;letter-spacing:-0.05em}
+
+.footer{padding:80px 24px;border-top:1px solid var(--border)}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:48px;margin-bottom:80px}
+.footer-heading{font-weight:700;margin-bottom:24px;font-size:14px;text-transform:uppercase;letter-spacing:0.2em;color:rgba(255,255,255,0.4)}
+.footer-links{display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--text3)}
+.footer-links li{cursor:pointer;transition:color 0.2s;list-style:none}.footer-links li:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:32px;border-top:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:24px;font-size:10px;color:var(--text4);font-family:var(--font-mono)}
+.footer-bottom-links{display:flex;gap:24px}.footer-bottom-links span{cursor:pointer}.footer-bottom-links span:hover{color:#fff}
+
+/* Login */
+.login-page{min-height:100vh;background:var(--bg);color:#fff;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
+.login-bg-1{position:absolute;top:-20%;left:-10%;width:500px;height:500px;background:rgba(37,99,235,0.2);border-radius:50%;filter:blur(120px);pointer-events:none}
+.login-bg-2{position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;background:rgba(6,182,212,0.1);border-radius:50%;filter:blur(120px);pointer-events:none}
+.login-card{width:100%;max-width:448px;background:rgba(10,10,10,0.8);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid var(--border2);padding:32px;border-radius:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);position:relative;z-index:10}
+
+/* Admin */
+.admin-layout{display:flex;min-height:100vh;background:var(--bg2);overflow:hidden}
+.admin-sidebar{position:fixed;inset-y:0;left:0;z-index:50;width:288px;background:var(--bg3);border-right:1px solid var(--border);transform:translateX(-100%);transition:transform 0.3s;display:flex;flex-direction:column}
+.admin-sidebar.open{transform:translateX(0)}
+.admin-sidebar-header{padding:24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.admin-sidebar-menu{flex:1;padding:24px 16px;font-family:var(--font-mono);font-size:14px}
+.admin-sidebar-label{padding:0 16px;font-size:10px;color:var(--text3);font-weight:700;margin-bottom:16px;letter-spacing:0.2em}
+.admin-menu-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:8px;transition:all 0.2s;color:var(--text2);margin-bottom:4px;border:none;background:none;cursor:pointer;text-align:left}
+.admin-menu-item:hover{background:rgba(255,255,255,0.05);color:#fff}
+.admin-menu-item.active{background:rgba(6,182,212,0.1);color:var(--cyan2);border:1px solid rgba(6,182,212,0.2)}
+.admin-main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)}
+.admin-header{height:80px;border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.4);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);z-index:10}
+.admin-content{flex:1;overflow-y:auto;padding:32px}
+
+.table-wrap{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;overflow-x:auto}
+table{width:100%;text-align:left;border-collapse:collapse}
+thead tr{border-bottom:1px solid var(--border2);background:rgba(255,255,255,0.05);font-size:14px;font-family:var(--font-mono);color:var(--text2)}
+th{padding:20px;font-weight:400;white-space:nowrap}
+td{padding:20px;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border)}tbody tr:hover{background:rgba(255,255,255,0.02)}
+
+.tabs{display:flex;gap:8px;margin-bottom:32px;border-bottom:1px solid var(--border2);overflow-x:auto;padding-bottom:8px}
+.tab-btn{padding:12px 24px;font-size:14px;font-weight:700;border-radius:8px 8px 0 0;transition:all 0.2s;color:var(--text3);white-space:nowrap;border:none;background:none;cursor:pointer}
+.tab-btn:hover{color:#fff;background:rgba(255,255,255,0.05)}
+.tab-btn.active{background:rgba(255,255,255,0.1);color:var(--cyan2);border-bottom:2px solid var(--cyan2)}
+
+.form-input{width:100%;background:rgba(0,0,0,0.5);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;outline:none;transition:border-color 0.2s;color:#fff;font-size:16px}
+.form-input:focus{border-color:var(--cyan)}
+.form-input-with-icon{padding-left:48px}
+.form-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.form-group{position:relative;margin-bottom:16px}
+.form-label{display:block;font-size:14px;color:var(--text2);margin-bottom:8px;font-family:var(--font-mono)}
+
+.notification-container{position:fixed;bottom:24px;right:24px;z-index:90;display:flex;flex-direction:column;gap:12px;width:288px;pointer-events:none}
+.notification{padding:16px;border-radius:12px;border:1px solid;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);display:flex;align-items:flex-start;gap:12px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25)}
+.notification.success{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.2);color:#4ADE80}
+.notification.warning{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.2);color:#FBBF24}
+.notification.info{background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.2);color:#60A5FA}
+.notification.ai{background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.2);color:var(--cyan2)}
+.notification-text{font-size:12px;font-family:var(--font-mono);color:#fff}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideDown{from{opacity:0;max-height:0}to{opacity:1;max-height:600px}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes scalePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes notifIn{from{opacity:0;transform:translateX(50px) scale(0.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes notifOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(0.5)}}
+.animate-scale-pulse{animation:scalePulse 4s ease-in-out infinite}
+.animate-spin{animation:spin 1s linear infinite}
+
+.obs{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+.obs.show{opacity:1;transform:translateY(0)}
+.obs-left{opacity:0;transform:translateX(-10px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+.obs-left.show{opacity:1;transform:translateX(0)}
+
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;z-index:75;background:#000;border-bottom:1px solid var(--border2);overflow:hidden}
+.mobile-menu.open{display:block;animation:slideDown 0.3s ease-out}
+.mobile-menu-content{padding:24px;display:flex;flex-direction:column;gap:24px;font-family:var(--font-mono);font-size:18px}
+.mobile-menu-divider{border-top:1px solid var(--border);padding-top:16px;display:flex;flex-direction:column;gap:16px}
+
+.admin-content-area{display:none}
+.admin-content-area.active{display:block}
+
+@media(min-width:640px){
+  .hero-buttons{flex-direction:row}.cta-buttons{flex-direction:row}
+}
+@media(min-width:768px){
+  .md\:flex{display:flex}.md\:hidden{display:none}.md\:block{display:block}
+  .md\:text-left{text-align:left}.md\:grid-cols-2{grid-template-columns:repeat(2,1fr)}
+  .md\:grid-cols-3{grid-template-columns:repeat(3,1fr)}.md\:grid-cols-4{grid-template-columns:repeat(4,1fr)}
+  .md\:flex-row{flex-direction:row}.md\:static{position:static}
+  .md\:p-8{padding:32px}.md\:px-20{padding-left:80px;padding-right:80px}
+  .md\:text-\[110px\]{font-size:110px}.md\:text-2xl{font-size:24px}.md\:text-5xl{font-size:48px}.md\:text-6xl{font-size:60px}.md\:text-8xl{font-size:96px}
+  .md\:gap-8{gap:32px}
+  .hero-title{font-size:110px}  .cta-title{font-size:96px}.pricing-title{font-size:60px}.portfolio-title{font-size:60px}
+  .hero-buttons{flex-direction:row}.cta-buttons{flex-direction:row}
+  .builder-body{height:600px}.builder-sidebar{display:block}
+  .stats-grid{grid-template-columns:repeat(4,1fr)}.portfolio-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:repeat(3,1fr)}.tech-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:repeat(4,1fr)}.footer-bottom{flex-direction:row}
+  .portfolio-header{flex-direction:row}
+  .admin-sidebar{position:static;transform:translateX(0)}
+}
+@media(min-width:1024px){
+  .lg\:flex{display:flex}.lg\:grid-cols-3{grid-template-columns:repeat(3,1fr)}
+  .lg\:order-1{order:1}.lg\:order-2{order:2}
+  .nav-links{display:flex}.nav-actions{display:flex}
+  .portfolio-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div class="notification-container" id="notifications"></div>
+
+<!-- PAGE HOME -->
+<div id="page-home" class="page active">
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <div class="flex items-center gap-8">
+      <div class="flex items-center cursor-pointer" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <span class="logo-hari">HARI</span>
+        <span class="logo-dev">Dev.I</span>
+      </div>
+      <div class="nav-links">
+        <button onclick="scrollToSection('showcase')">Showcase</button>
+        <button onclick="scrollToSection('tech')">Tech</button>
+        <button onclick="scrollToSection('pricing')">Pricing</button>
+      </div>
+    </div>
+    <div class="nav-actions" id="navActions"></div>
+    <button class="md:hidden" onclick="toggleMobileMenu()" id="menuToggle" style="color:#fff"><span class="icon" data-icon="menu"></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-content">
+    <button onclick="scrollToSection('showcase');closeMobileMenu()" style="text-align:left;background:none;border:none;color:inherit">Showcase</button>
+    <button onclick="scrollToSection('tech');closeMobileMenu()" style="text-align:left;background:none;border:none;color:inherit">Tech Stack</button>
+    <button onclick="scrollToSection('pricing');closeMobileMenu()" style="text-align:left;background:none;border:none;color:inherit">Pricing</button>
+    <div class="mobile-menu-divider" id="mobileMenuActions"></div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content obs">
+    <div class="mb-6" id="heroBadge"></div>
+    <h1 class="hero-title" id="heroTitle"></h1>
+    <p class="hero-desc" id="heroDesc"></p>
+    <div class="hero-buttons" style="display:flex;flex-direction:column;gap:16px;align-items:center">
+      <button class="btn-primary" onclick="scrollToSection('builder-workspace')">BUILD NOW <span class="icon" data-icon="arrow-up-right"></span></button>
+      <button class="btn-ghost" onclick="dummyClick('Github Repo')"><span class="icon" data-icon="git-branch"></span> VIEW REPOSITORY</button>
+    </div>
+  </div>
+
+  <!-- Builder -->
+  <div class="builder" id="builder-workspace">
+    <div class="builder-inner">
+      <div class="builder-header">
+        <div class="builder-dots"><div class="builder-dot red"></div><div class="builder-dot yellow"></div><div class="builder-dot green"></div></div>
+        <div class="builder-url">https://builder.haridev.ai</div>
+        <div style="width:16px"></div>
+      </div>
+      <div class="builder-body">
+        <div class="builder-sidebar">
+          <div class="builder-sidebar-label">UI COMPONENTS</div>
+          <div class="builder-sidebar-items">
+            <div class="builder-sidebar-item" onclick="dummyClick('Component Header')"></div>
+            <div class="builder-sidebar-item h-24" onclick="dummyClick('Component Features')"></div>
+            <div class="builder-sidebar-item" onclick="dummyClick('Component Footer')"></div>
+          </div>
+        </div>
+        <div class="builder-main">
+          <div class="builder-grid-bg"></div>
+          <div id="builderIdle" class="z-10" style="width:100%;max-width:672px;margin:0 auto">
+            <div style="text-align:center">
+              <div class="animate-scale-pulse" style="width:96px;height:96px;background:rgba(6,182,212,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;border:1px solid rgba(6,182,212,0.3);box-shadow:0 0 30px rgba(6,182,212,0.2)">
+                <span class="icon" data-icon="cpu" style="width:40px;height:40px;color:var(--cyan2)"></span>
+              </div>
+              <h3 style="font-size:30px;font-weight:700;letter-spacing:-0.025em;margin-bottom:8px">AI Workspace Ready</h3>
+              <p style="color:var(--text3);margin-bottom:32px">Ketik instruksi di bawah untuk mulai men-generate komponen langsung dari database mandirimu.</p>
+              <div style="position:relative">
+                <input id="buildInput" type="text" placeholder="Contoh: Buat landing page SaaS untuk platform edukasi..." class="form-input" onkeydown="if(event.key==='Enter')handleBuild()">
+              </div>
+              <button class="btn-cyan" onclick="handleBuild()" style="margin-top:16px">GENERATE WEBSITE <span class="icon" data-icon="zap"></span></button>
+            </div>
+          </div>
+          <div id="builderLog" class="z-10" style="display:none;width:100%;max-width:896px">
+            <div style="background:rgba(0,0,0,0.8);border:1px solid var(--border2);padding:24px;border-radius:12px;font-family:var(--font-mono);font-size:14px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);min-height:320px;overflow-y:auto;text-align:left">
+              <div style="display:flex;align-items:center;gap:12px;color:var(--cyan2);margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px">
+                <span class="icon" data-icon="terminal" style="width:20px;height:20px"></span>
+                <span style="letter-spacing:0.2em;font-weight:700">HARI_DEV_EXECUTION_LOG</span>
+              </div>
+              <div id="logLines" style="display:flex;flex-direction:column;gap:16px;color:var(--text2)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="obs text-center md:text-left"><p class="text-xs font-mono text-cyan-500 mb-2 uppercase tracking-widest">Generation Speed</p><h4 class="text-5xl font-black mb-1">0.4s</h4><p class="text-gray-600 text-sm">Local Inference</p></div>
+    <div class="obs text-center md:text-left"><p class="text-xs font-mono text-cyan-500 mb-2 uppercase tracking-widest">Security Standard</p><h4 class="text-5xl font-black mb-1">100%</h4><p class="text-gray-600 text-sm">Zero External API</p></div>
+    <div class="obs text-center md:text-left"><p class="text-xs font-mono text-cyan-500 mb-2 uppercase tracking-widest">Export Quality</p><h4 class="text-5xl font-black mb-1">A+</h4><p class="text-gray-600 text-sm">Production Ready</p></div>
+    <div class="obs text-center md:text-left"><p class="text-xs font-mono text-cyan-500 mb-2 uppercase tracking-widest">Monthly Users</p><h4 class="text-5xl font-black mb-1">12K+</h4><p class="text-gray-600 text-sm">Active Developers</p></div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section id="showcase" class="portfolio-section">
+  <div class="portfolio-header">
+    <div style="max-width:672px">
+      <h2 class="portfolio-title">BUILT WITH <br> <span style="color:var(--cyan2)">HARI DEV CORE</span></h2>
+      <p class="portfolio-desc">Inilah contoh hasil website yang dihasilkan oleh AI kami menggunakan arsitektur lokal. Cepat, unik, dan sepenuhnya milik Anda.</p>
+    </div>
+    <button onclick="dummyClick('Semua Portfolio')" style="color:var(--cyan2);font-weight:700;display:flex;align-items:center;gap:8px;border:none;background:none;cursor:pointer">VIEW ALL SHOWCASE <span class="icon" data-icon="chevron-right"></span></button>
+  </div>
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div id="portfolioEmpty" style="grid-column:1/-1;height:128px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);border-radius:16px;color:var(--text3);font-family:var(--font-mono)">Belum ada portofolio yang di-publish dari Admin.</div>
+    <div id="portfolioItems" style="display:none;grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:32px"></div>
+  </div>
+</section>
+
+<!-- Tech -->
+<section id="tech" class="tech-section">
+  <div class="tech-inner">
+    <div class="tech-grid">
+      <div class="order-2 lg:order-1">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:16px;padding-top:48px">
+            <div onclick="dummyClick('Docs pgvector')" style="cursor:pointer;height:256px;background:rgba(6,182,212,0.2);border-radius:24px;border:1px solid rgba(6,182,212,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center;transition:background 0.3s" onmouseover="this.style.background='rgba(6,182,212,0.3)'" onmouseout="this.style.background='rgba(6,182,212,0.2)'">
+              <span class="icon" data-icon="database" style="width:40px;height:40px;color:var(--cyan2)"></span>
+              <h5 style="font-weight:700">pgvector</h5>
+              <p style="font-size:10px;opacity:0.5">Local semantic memory storage</p>
+            </div>
+            <div style="height:192px;background:rgba(255,255,255,0.05);border-radius:24px;border:1px solid var(--border2)"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="height:192px;background:rgba(255,255,255,0.05);border-radius:24px;border:1px solid var(--border2)"></div>
+            <div onclick="dummyClick('Docs Ollama')" style="cursor:pointer;height:256px;background:rgba(37,99,235,0.2);border-radius:24px;border:1px solid rgba(37,99,235,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center;transition:background 0.3s" onmouseover="this.style.background='rgba(37,99,235,0.3)'" onmouseout="this.style.background='rgba(37,99,235,0.2)'">
+              <span class="icon" data-icon="cpu" style="width:40px;height:40px;color:var(--blue2)"></span>
+              <h5 style="font-weight:700">Ollama LLM</h5>
+              <p style="font-size:10px;opacity:0.5">Private inference engine</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="order-1 lg:order-2 obs">
+        <h2 class="text-4xl md:text-5xl font-black mb-8 leading-tight">PRIVACY BY <span style="color:var(--cyan2)">DESIGN.</span></h2>
+        <p style="color:var(--text2);font-size:18px;margin-bottom:40px;line-height:1.625;font-weight:300">Tidak ada kunci API OpenAI. Tidak ada data yang keluar dari server Anda. HARI DEV menggunakan integrasi pgvector untuk mengingat gaya coding Anda dan Ollama untuk memproses logika secara instan di CPU/GPU lokal.</p>
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div class="obs-left"><div style="display:flex;gap:16px"><div style="flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,0.2);border:1px solid rgba(6,182,212,0.5);display:flex;align-items:center;justify-content:center;color:var(--cyan2);font-size:10px">&#10003;</div><div><h6 style="font-weight:700;margin-bottom:4px">Local Data Processing</h6><p style="color:var(--text3);font-size:14px">Data sensitif tidak pernah meninggalkan infrastruktur Anda.</p></div></div></div>
+          <div class="obs-left"><div style="display:flex;gap:16px"><div style="flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,0.2);border:1px solid rgba(6,182,212,0.5);display:flex;align-items:center;justify-content:center;color:var(--cyan2);font-size:10px">&#10003;</div><div><h6 style="font-weight:700;margin-bottom:4px">Unlimited Token Usage</h6><p style="color:var(--text3);font-size:14px">Lupakan biaya bulanan per token yang mencekik.</p></div></div></div>
+          <div class="obs-left"><div style="display:flex;gap:16px"><div style="flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,0.2);border:1px solid rgba(6,182,212,0.5);display:flex;align-items:center;justify-content:center;color:var(--cyan2);font-size:10px">&#10003;</div><div><h6 style="font-weight:700;margin-bottom:4px">Custom Component Library</h6><p style="color:var(--text3);font-size:14px">Ajarkan AI menggunakan sistem desain milik perusahaan Anda.</p></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="pricing-section">
+  <div class="pricing-inner">
+    <div class="text-center mb-20 obs">
+      <h2 class="pricing-title">Ready to <span style="color:var(--blue2)">Self-Host?</span></h2>
+      <p style="color:var(--text2)">Pilih paket yang sesuai dengan skala infrastruktur Anda.</p>
+    </div>
+    <div class="pricing-grid" id="pricingGrid"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-wrapper">
+    <div class="cta-inner">
+      <div class="cta-glow"></div>
+      <div class="obs relative z-10" style="max-width:768px;margin:0 auto">
+        <h2 class="cta-title">START YOUR <br> OWN ENGINE.</h2>
+        <p style="color:var(--text2);font-size:18px;margin-bottom:48px">Bergabung dengan ribuan developer yang memilih kemandirian data bersama Hari Dev.</p>
+        <div class="cta-buttons" style="display:flex;flex-direction:column;gap:24px;justify-content:center;align-items:center">
+          <button class="btn-primary" style="background:#fff;color:#000;padding:20px 48px" onclick="navigate('login')" id="ctaPrimaryBtn">GET STARTED FOR FREE <span class="icon" data-icon="chevron-right"></span></button>
+          <button class="btn-ghost" style="padding:20px 48px" onclick="dummyClick('Jadwalkan Demo')">BOOK A DEMO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div style="display:flex;align-items:center;margin-bottom:32px">
+        <span style="background:linear-gradient(to right,var(--blue),var(--cyan));padding:4px 8px;font-size:14px;font-weight:900;letter-spacing:-0.05em;text-transform:uppercase">HARI</span>
+        <span style="background:#fff;color:#000;padding:4px 8px;font-size:14px;font-weight:900;letter-spacing:-0.05em;text-transform:uppercase">Dev</span>
+      </div>
+      <p style="color:var(--text3);font-size:12px;line-height:1.625;max-width:320px">Platform SaaS Masa Depan untuk pengembangan website berbasis AI dengan infrastruktur lokal yang aman dan mandiri.</p>
+    </div>
+    <div><h5 class="footer-heading">Product</h5><ul class="footer-links"><li onclick="dummyClick('Builder Engine')">Builder Engine</li><li onclick="dummyClick('Vector Store')">Vector Store</li><li onclick="dummyClick('Deployment')">Deployment</li><li onclick="dummyClick('Whitelabel')">Whitelabel</li></ul></div>
+    <div><h5 class="footer-heading">Resources</h5><ul class="footer-links"><li onclick="dummyClick('Dokumentasi')">Documentation</li><li onclick="dummyClick('Github')">Github Repo</li><li onclick="dummyClick('Ollama Guide')">Ollama Integration</li><li onclick="dummyClick('API')">API Docs</li></ul></div>
+    <div>
+      <h5 class="footer-heading">Newsletter</h5>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="email" placeholder="Email" class="form-input" style="font-size:12px">
+        <button onclick="dummyClick('Subscribe')" style="background:#fff;color:#000;padding:12px;border-radius:8px;border:none;cursor:pointer"><span class="icon" data-icon="send" style="width:16px;height:16px"></span></button>
+      </div>
+      <div style="display:flex;gap:16px;color:var(--text3)">
+        <span class="icon" data-icon="globe" style="cursor:pointer;width:18px;height:18px" onclick="dummyClick('Website Utama')"></span>
+        <span class="icon" data-icon="mail" style="cursor:pointer;width:18px;height:18px" onclick="dummyClick('Kirim Email')"></span>
+        <span class="icon" data-icon="git-branch" style="cursor:pointer;width:18px;height:18px" onclick="dummyClick('Github')"></span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 HARI DEV TECHNOLOGIES INC. ALL RIGHTS RESERVED.</p>
+    <div class="footer-bottom-links"><span onclick="dummyClick('Privacy Policy')">PRIVACY POLICY</span><span onclick="dummyClick('Terms of Service')">TERMS OF SERVICE</span><span onclick="dummyClick('Cookies')">COOKIES</span></div>
+  </div>
+</footer>
+</div>
+
+<!-- PAGE LOGIN -->
+<div id="page-login" class="page">
+  <div class="login-page">
+    <div class="login-bg-1"></div>
+    <div class="login-bg-2"></div>
+    <a style="position:absolute;top:32px;left:32px;display:flex;align-items:center;gap:8px;z-index:50;cursor:pointer" onclick="navigate('home')">
+      <span style="background:linear-gradient(to right,var(--blue),var(--cyan));padding:4px 8px;font-size:14px;font-weight:900;letter-spacing:-0.05em;text-transform:uppercase">HARI</span>
+      <span style="background:#fff;color:#000;padding:4px 8px;font-size:14px;font-weight:900;letter-spacing:-0.05em">Dev.I</span>
+    </a>
+    <div class="login-card" style="animation:fadeInUp 0.6s ease-out">
+      <div class="text-center mb-8">
+        <div style="margin-bottom:16px"><span class="icon" data-icon="terminal" style="width:40px;height:40px;color:var(--cyan2)"></span></div>
+        <h2 style="font-size:30px;font-weight:900" id="loginTitle">Welcome Back.</h2>
+        <p style="color:var(--text3);font-size:14px;margin-top:8px" id="loginSubtitle">Login ke HARI DEV Workspace Anda.</p>
+      </div>
+      <div id="loginMessage"></div>
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <div id="signupFields" style="display:none">
+          <div class="form-group">
+            <span class="form-icon"><span class="icon" data-icon="user" style="width:18px;height:18px"></span></span>
+            <input id="signupName" type="text" placeholder="Nama Lengkap" class="form-input form-input-with-icon" required>
+          </div>
+          <div class="form-group">
+            <span class="form-icon"><span class="icon" data-icon="phone" style="width:18px;height:18px"></span></span>
+            <input id="signupPhone" type="tel" placeholder="Nomor WhatsApp / HP" class="form-input form-input-with-icon" required>
+          </div>
+          <div class="form-group">
+            <span class="form-icon"><span class="icon" data-icon="calendar" style="width:18px;height:18px"></span></span>
+            <input id="signupDate" type="date" class="form-input form-input-with-icon" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <span class="form-icon"><span class="icon" data-icon="mail" style="width:18px;height:18px"></span></span>
+          <input id="loginEmail" type="email" placeholder="Email Address" class="form-input form-input-with-icon" required>
+        </div>
+        <div class="form-group">
+          <span class="form-icon"><span class="icon" data-icon="lock" style="width:18px;height:18px"></span></span>
+          <input id="loginPassword" type="password" placeholder="Password" class="form-input form-input-with-icon" required>
+        </div>
+        <button type="submit" id="loginSubmitBtn" class="btn-cyan" style="margin-top:24px">SIGN IN <span class="icon" data-icon="arrow-right"></span></button>
+      </form>
+      <div style="margin-top:32px;text-align:center;font-size:14px;color:var(--text3)">
+        <span id="loginToggleText">Belum punya akses?</span>
+        <button type="button" onclick="toggleLoginView()" style="color:var(--cyan2);font-weight:700;margin-left:4px;background:none;border:none;cursor:pointer">Request Akun</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div style="min-height:100vh;background:var(--bg)">
+    <nav class="nav">
+      <div class="nav-inner">
+        <div class="flex items-center gap-8">
+          <div class="flex items-center cursor-pointer" onclick="navigate('home')">
+            <span class="logo-hari">HARI</span>
+            <span class="logo-dev">Dev.I</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <button onclick="navigate('home')" class="btn-ghost" style="padding:8px 20px">Back to Home</button>
+        </div>
+      </div>
+    </nav>
+    <div style="padding-top:96px">
+      <div class="text-center" style="padding:48px 24px">
+        <span class="badge badge-cyan" style="margin-bottom:24px">DASHBOARD ACTIVE</span>
+        <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.05em;line-height:1.1;margin-bottom:16px">Welcome to Your<br><span style="color:var(--cyan2)">Workspace</span></h1>
+        <p style="color:var(--text2);font-size:18px;max-width:600px;margin:0 auto">Manage your AI-generated projects and components here.</p>
+      </div>
+      <div style="padding:0 24px 128px;max-width:1280px;margin:0 auto">
+        <div style="display:grid;grid-template-columns:1fr;gap:24px;max-width:600px;margin:0 auto">
+          <div style="background:var(--bg3);border:1px solid var(--border2);padding:32px;border-radius:24px;text-align:center">
+            <div style="width:64px;height:64px;background:rgba(6,182,212,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:1px solid rgba(6,182,212,0.3)">
+              <span class="icon" data-icon="layout-dashboard" style="width:32px;height:32px;color:var(--cyan2)"></span>
+            </div>
+            <h3 style="font-weight:700;margin-bottom:8px">My Projects</h3>
+            <p style="color:var(--text3);font-size:14px;margin-bottom:24px">Coming soon - your saved projects will appear here.</p>
+            <button class="btn-cyan" style="width:auto;padding:12px 32px;display:inline-flex" onclick="dummyClick('New Project')">Create New Project</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-layout">
+    <div id="adminNotif" style="position:fixed;top:24px;right:24px;z-index:100"></div>
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-header">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:linear-gradient(to right,var(--blue),var(--cyan));padding:4px 8px;font-size:14px;font-weight:900;text-transform:uppercase">HARI</span>
+          <span style="background:#fff;color:#000;padding:4px 8px;font-size:14px;font-weight:900;text-transform:uppercase">Admin</span>
+        </div>
+        <button class="md:hidden" onclick="closeAdminSidebar()" style="color:var(--text3);background:none;border:none;cursor:pointer"><span class="icon" data-icon="x" style="width:20px;height:20px"></span></button>
+      </div>
+      <div class="admin-sidebar-menu">
+        <div class="admin-sidebar-label">MAIN MENU</div>
+        <button class="admin-menu-item active" onclick="switchAdminView('dashboard-view')"><span class="icon" data-icon="layout-dashboard"></span> Dashboard Overview</button>
+        <button class="admin-menu-item" onclick="switchAdminView('users-view')"><span class="icon" data-icon="users"></span> User Database (SSO)</button>
+        <button class="admin-menu-item" onclick="switchAdminView('cms-view')"><span class="icon" data-icon="panel-top"></span> Landing Page CMS</button>
+      </div>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-header">
+        <div style="display:flex;align-items:center;gap:16px">
+          <button class="md:hidden" onclick="openAdminSidebar()" style="color:var(--text2);background:none;border:none;cursor:pointer"><span class="icon" data-icon="menu" style="width:24px;height:24px"></span></button>
+          <div style="display:none;align-items:center;gap:8px;font-size:14px;font-family:var(--font-mono);color:var(--text3)" class="md:flex">
+            <span>Admin</span> <span class="icon" data-icon="chevron-right" style="width:14px;height:14px"></span>
+            <span style="color:var(--cyan2);text-transform:capitalize" id="adminBreadcrumb">dashboard overview</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <a onclick="navigate('home')" style="display:none;align-items:center;gap:8px;font-size:12px;font-weight:700;background:rgba(255,255,255,0.1);padding:8px 16px;border-radius:9999px;cursor:pointer" class="md:flex" id="viewLiveSite"><span class="icon" data-icon="eye"></span> View Live Site</a>
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(to top right,var(--cyan2),var(--blue));padding:2px">
+            <div style="width:100%;height:100%;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">AD</div>
+          </div>
+        </div>
+      </header>
+      <div class="admin-content">
+
+        <!-- Dashboard Overview -->
+        <div class="admin-content-area active" id="dashboard-view">
+          <h1 style="font-size:30px;font-weight:900;margin-bottom:32px">System Overview</h1>
+          <p style="color:var(--text3);font-family:var(--font-mono)">Ini adalah area statistik yang akan dikembangkan selanjutnya.</p>
+          <div style="display:grid;gap:24px;margin-top:48px">
+            <div style="background:var(--bg3);border:1px solid var(--border2);padding:32px;border-radius:24px">
+              <h3 style="font-weight:700;margin-bottom:16px">Quick Stats</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px">
+                <div><p style="font-size:12px;color:var(--text3);font-family:var(--font-mono)">Total Users</p><p style="font-size:36px;font-weight:900;color:var(--cyan2)">0</p></div>
+                <div><p style="font-size:12px;color:var(--text3);font-family:var(--font-mono)">Portfolios</p><p style="font-size:36px;font-weight:900;color:var(--cyan2)">0</p></div>
+                <div><p style="font-size:12px;color:var(--text3);font-family:var(--font-mono)">Projects Built</p><p style="font-size:36px;font-weight:900;color:var(--cyan2)">0</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users View -->
+        <div class="admin-content-area" id="users-view">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;flex-wrap:wrap;gap:16px">
+            <div>
+              <h1 style="font-size:30px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:12px"><span class="icon" data-icon="users" style="color:var(--cyan2)"></span> User Database</h1>
+              <p style="color:var(--text2);font-size:14px">Review pendaftaran user baru.</p>
+            </div>
+            <button onclick="loadUsers()" style="padding:8px 16px;background:rgba(255,255,255,0.05);border-radius:8px;font-size:14px;display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text2);border:none"><span class="icon" data-icon="refresh-ccw" id="refreshIcon"></span> Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Nama Lengkap</th><th>Email</th><th class="text-center">Status</th><th class="text-center">Aksi Admin</th></tr></thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CMS View -->
+        <div class="admin-content-area" id="cms-view">
+          <div style="margin-bottom:32px">
+            <h1 style="font-size:30px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:12px"><span class="icon" data-icon="layout-template" style="color:var(--cyan2)"></span> Landing Page Editor</h1>
+            <p style="color:var(--text2);font-size:14px">Data di bawah ini tersimpan di localStorage.</p>
+          </div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchCMSTab('hero-tab',this)">Hero Section</button>
+            <button class="tab-btn" onclick="switchCMSTab('portfolio-tab',this)">Portfolio Manager</button>
+          </div>
+          <div class="admin-content-area active" id="hero-tab">
+            <div style="background:var(--bg3);border:1px solid var(--border2);padding:24px 32px;border-radius:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px;flex-wrap:wrap;gap:16px">
+                <h3 style="font-size:20px;font-weight:700">Teks Utama Landing Page</h3>
+                <button onclick="saveHero()" id="saveHeroBtn" style="padding:8px 20px;background:var(--cyan);color:#000;border-radius:8px;font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px;cursor:pointer;border:none"><span class="icon" data-icon="save"></span> Simpan Teks</button>
+              </div>
+              <div style="display:grid;gap:24px">
+                <div><label class="form-label">Badge Text</label><input id="heroBadgeText" class="form-input" value="AI-Powered Platform"></div>
+                <div style="display:grid;grid-template-columns:1fr;gap:24px" class="md:grid-cols-2">
+                  <div><label class="form-label">Headline 1</label><input id="heroTitle1" class="form-input" style="font-weight:900;text-transform:uppercase"></div>
+                  <div><label class="form-label">Headline 2 (Highlight)</label><input id="heroTitle2" class="form-input" style="font-weight:900;text-transform:uppercase;color:var(--text2)"></div>
+                </div>
+                <div><label class="form-label">Deskripsi Lengkap</label><textarea id="heroDescInput" rows="3" class="form-input" style="line-height:1.625;resize:vertical"></textarea></div>
+              </div>
+            </div>
+          </div>
+          <div class="admin-content-area" id="portfolio-tab">
+            <div style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);padding:24px;border-radius:16px;display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
+              <div style="display:grid;grid-template-columns:1fr;gap:16px" class="md:grid-cols-2">
+                <div><label style="font-size:12px;color:var(--cyan2);font-family:var(--font-mono);margin-bottom:4px;display:block">Nama Project</label><input id="newPortfolioTitle" placeholder="Cth: Zenith Studio" class="form-input" style="font-size:14px"></div>
+                <div><label style="font-size:12px;color:var(--cyan2);font-family:var(--font-mono);margin-bottom:4px;display:block">Kategori Industri</label><input id="newPortfolioType" placeholder="Cth: SaaS / Fintech" class="form-input" style="font-size:14px"></div>
+              </div>
+              <button onclick="addPortfolio()" style="padding:12px 24px;background:var(--cyan);color:#000;font-weight:700;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:none"><span class="icon" data-icon="plus"></span> Tambah Baru</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th style="padding:16px">Project</th><th style="padding:16px">Kategori</th><th style="padding:16px;text-align:center">Status</th><th style="padding:16px;text-align:right">Aksi</th></tr></thead>
+                <tbody id="portfolioTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+var ICONS={};
+
+function defIcon(name,path){ICONS[name]='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+path+'</svg>'}
+
+defIcon('terminal','<polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>');
+defIcon('zap','<polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/>');
+defIcon('send','<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9"/>');
+defIcon('database','<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>');
+defIcon('layout-template','<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>');
+defIcon('globe','<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>');
+defIcon('cpu','<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>');
+defIcon('chevron-right','<polyline points="9 18 15 12 9 6"/>');
+defIcon('check-circle','<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>');
+defIcon('menu','<line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>');
+defIcon('x','<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>');
+defIcon('arrow-up-right','<line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>');
+defIcon('git-branch','<line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>');
+defIcon('mail','<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>');
+defIcon('log-out','<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>');
+defIcon('layout-dashboard','<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>');
+defIcon('lock','<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>');
+defIcon('user','<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>');
+defIcon('phone','<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>');
+defIcon('calendar','<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>');
+defIcon('arrow-right','<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>');
+defIcon('alert-circle','<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>');
+defIcon('panel-top','<rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>');
+defIcon('users','<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>');
+defIcon('plus','<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>');
+defIcon('trash-2','<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>');
+defIcon('save','<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>');
+defIcon('eye','<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>');
+defIcon('refresh-ccw','<polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>');
+defIcon('sparkles','<path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M20 16l-1 2.5L16.5 19l2.5 1 1 2.5 1-2.5L23.5 19l-2.5-1z"/>');
+defIcon('settings','<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>');
+defIcon('search','<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>');
+defIcon('check','<polyline points="20 6 9 17 4 12"/>');
+defIcon('x-circle','<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>');
+defIcon('bell','<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>');
+
+function renderIcons(parent){
+  if(typeof parent==='string')parent=document.querySelector(parent)||document;
+  parent.querySelectorAll('[data-icon]').forEach(function(el){
+    var name=el.getAttribute('data-icon');
+    var size=el.getAttribute('data-size')||24;
+    el.innerHTML=ICONS[name]||'';
+    el.style.width=size+'px';
+    el.style.height=size+'px';
+  });
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  renderIcons(document);
+  init();
+});
+
+var state={isLoginView:true,isLoggedIn:false,isAdmin:false,isBuilding:false,buildStep:0};
+
+var mockProfiles=[
+  {id:'1',email:'admin@haridev.ai',full_name:'Admin HARI DEV',phone:'08123456789',birth_date:'1990-01-01',status:'approved',role:'admin'},
+  {id:'2',email:'user@example.com',full_name:'Budi Santoso',phone:'08129876543',birth_date:'1995-06-15',status:'pending',role:'user'},
+  {id:'3',email:'siti@example.com',full_name:'Siti Rahayu',phone:'08781234567',birth_date:'1998-03-20',status:'approved',role:'user'},
+  {id:'4',email:'andi@example.com',full_name:'Andi Pratama',phone:'08561122334',birth_date:'2000-12-10',status:'rejected',role:'user'}
+];
+var mockPortfolios=[
+  {id:1,title:'Zenith Studio',type:'SaaS',color:'from-blue-500/20',status:'Published',link_url:''},
+  {id:2,title:'Mochi Matcha',type:'Kuliner',color:'from-rose-400/20',status:'Published',link_url:''},
+  {id:3,title:'KasirPintar',type:'Fintech',color:'from-emerald-400/20',status:'Draft',link_url:''},
+  {id:4,title:'CreativeHub',type:'Agency',color:'from-purple-500/20',status:'Published',link_url:''}
+];
+var defaultHero={badge_text:'System v3.2 \u2014 Private AI',title_line1:'Build Websites',title_line2:'Without Compromise.',description:'Rancang dan deploy website menggunakan AI lokal Anda sendiri. Zero API call ke pihak ketiga, privasi penuh, dan tak terbatas.'};
+
+function getHeroData(){try{var d=JSON.parse(localStorage.getItem('haridev_hero'));if(d)return d}catch(e){}return defaultHero}
+function saveHeroData(d){localStorage.setItem('haridev_hero',JSON.stringify(d))}
+function getPortfolios(){try{var p=JSON.parse(localStorage.getItem('haridev_portfolios'));if(p)return p}catch(e){}return mockPortfolios}
+function savePortfolios(p){localStorage.setItem('haridev_portfolios',JSON.stringify(p))}
+function getProfiles(){try{var p=JSON.parse(localStorage.getItem('haridev_profiles'));if(p)return p}catch(e){}return mockProfiles}
+function saveProfiles(p){localStorage.setItem('haridev_profiles',JSON.stringify(p))}
+
+// Notifications
+function addNotification(text,type){
+  type=type||'info';
+  var container=document.getElementById('notifications');
+  var notif=document.createElement('div');
+  notif.className='notification '+type;
+  notif.style.animation='notifIn 0.4s ease-out';
+  var iconHtml=type==='success'?ICONS['check-circle']:ICONS['sparkles'];
+  notif.innerHTML='<span class="icon" style="width:18px;height:18px;flex-shrink:0">'+iconHtml+'</span><p class="notification-text">'+text+'</p>';
+  container.appendChild(notif);
+  setTimeout(function(){notif.style.animation='notifOut 0.3s ease-out forwards';setTimeout(function(){notif.remove()},300)},4000);
+}
+
+function adminNotification(msg,type){
+  type=type||'success';
+  var container=document.getElementById('adminNotif');
+  var notif=document.createElement('div');
+  notif.style.cssText='padding:16px 24px;border-radius:12px;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);display:flex;align-items:center;gap:12px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid;animation:notifIn 0.4s ease-out;font-family:var(--font-mono);font-size:14px';
+  if(type==='error'){notif.style.background='rgba(248,113,113,0.1)';notif.style.borderColor='rgba(248,113,113,0.2)';notif.style.color='#F87171'}
+  else{notif.style.background='rgba(74,222,128,0.1)';notif.style.borderColor='rgba(74,222,128,0.2)';notif.style.color='#4ADE80'}
+  notif.innerHTML=(type==='error'?ICONS['x-circle']:ICONS['check-circle'])+' '+msg;
+  container.appendChild(notif);
+  setTimeout(function(){notif.style.transition='all 0.3s';notif.style.opacity='0';notif.style.transform='translateY(-20px)';setTimeout(function(){notif.remove()},300)},3000);
+}
+
+// Router
+function navigate(page){
+  state.currentPage=page;
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  var target=document.getElementById('page-'+page);
+  if(target)target.classList.add('active');
+  window.scrollTo(0,0);
+  closeMobileMenu();
+  if(page==='home'){initHomePage()}
+  if(page==='login'){initLoginPage()}
+  if(page==='admin'){initAdminPage()}
+  if(page==='dashboard'){}
+  window.location.hash=page;
+}
+
+window.addEventListener('hashchange',function(){
+  var page=window.location.hash.replace('#','')||'home';
+  navigate(page);
+});
+
+function scrollToSection(id){
+  var el=document.getElementById(id);
+  if(el){el.scrollIntoView({behavior:'smooth'});closeMobileMenu()}
+}
+
+function toggleMobileMenu(){
+  var m=document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+  var btn=document.getElementById('menuToggle');
+  var iconName=m.classList.contains('open')?'x':'menu';
+  btn.innerHTML='<span class="icon" data-icon="'+iconName+'"></span>';
+  setTimeout(function(){renderIcons(btn)},10);
+}
+
+function closeMobileMenu(){
+  var m=document.getElementById('mobileMenu');
+  if(m)m.classList.remove('open');
+}
+
+function dummyClick(name){addNotification('Mengarahkan ke '+name+'...','warning')}
+
+// Scroll progress
+window.addEventListener('scroll',function(){
+  var scrollTop=window.scrollY;
+  var docHeight=document.documentElement.scrollHeight-window.innerHeight;
+  var progress=docHeight>0?scrollTop/docHeight:0;
+  document.getElementById('progress-bar').style.transform='scaleX('+progress+')';
+});
+
+// Intersection Observer
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){entry.target.classList.add('show')}
+  });
+},{threshold:0.1});
+
+function observeElements(){
+  document.querySelectorAll('.obs,.obs-left').forEach(function(el){observer.observe(el)});
+}
+
+// HOME
+function initHomePage(){
+  renderHero();
+  renderPricing();
+  renderPortfolios();
+  updateNav();
+  setTimeout(observeElements,100);
+}
+
+function renderHero(){
+  var hero=getHeroData();
+  document.getElementById('heroBadge').innerHTML='<span class="badge badge-cyan">'+hero.badge_text+'</span>';
+  document.getElementById('heroTitle').innerHTML=hero.title_line1+'<br><span class="text-gradient">'+hero.title_line2+'</span>';
+  document.getElementById('heroDesc').textContent=hero.description;
+}
+
+function renderPricing(){
+  var grid=document.getElementById('pricingGrid');
+  var plans=[
+    {name:'Community',price:'FREE',perks:['Local SQLite Support','Llama 3.1 Optimized','Community Components','Basic Export']},
+    {name:'Developer',price:'$29',perks:['Postgres pgvector Support','Custom Model Tuning','Advanced AI Workflows','Priority Support'],popular:true},
+    {name:'Enterprise',price:'Custom',perks:['Multiple GPU Support','SSO & IAM Integration','Whitelabel Dashboard','Dedicated Engineer']}
+  ];
+  grid.innerHTML='';
+  plans.forEach(function(p){
+    var card=document.createElement('div');
+    card.className='obs';
+    card.style.cssText='padding:40px;border-radius:40px;border:1px solid;display:flex;flex-direction:column;height:100%;position:relative;transition:transform 0.3s';
+    card.onmouseenter=function(){this.style.transform='scale(1.02)'};
+    card.onmouseleave=function(){this.style.transform='scale(1)'};
+    if(p.popular){card.style.borderColor='var(--cyan)';card.style.background='rgba(6,182,212,0.05)'}
+    else{card.style.borderColor='var(--border2)';card.style.background='rgba(255,255,255,0.02)'}
+    var html='';
+    if(p.popular)html+='<div style="position:absolute;top:0;right:40px;transform:translateY(-50%);background:var(--cyan);color:#000;font-size:10px;font-weight:900;padding:4px 16px;border-radius:9999px">POPULAR CHOICE</div>';
+    html+='<h4 style="font-size:20px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.2em">'+p.name+'</h4>';
+    html+='<div style="display:flex;align-items:baseline;gap:4px;margin-bottom:32px"><span style="font-size:36px;font-weight:900">'+p.price+'</span>'+(p.price!=='Custom'?'<span style="color:var(--text3);font-size:14px">/mo</span>':'')+'</div>';
+    html+='<ul style="display:flex;flex-direction:column;gap:16px;margin-bottom:40px;flex:1">';
+    p.perks.forEach(function(perk){html+='<li style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text2)"><div style="width:6px;height:6px;border-radius:50%;background:var(--cyan)"></div> '+perk+'</li>'});
+    html+='</ul>';
+    html+='<button onclick="handlePlanClick()" style="width:100%;padding:16px;border-radius:9999px;font-weight:900;font-size:14px;border:none;cursor:pointer;transition:all 0.3s;'+(p.popular?'background:var(--cyan);color:#000;box-shadow:0 0 20px rgba(6,182,212,0.4)':'background:rgba(255,255,255,0.1);color:#fff')+'">'+(state.isLoggedIn?'UPGRADE PLAN':'CHOOSE PLAN')+'</button>';
+    card.innerHTML=html;
+    grid.appendChild(card);
+  });
+  setTimeout(observeElements,100);
+}
+
+function handlePlanClick(){
+  if(state.isLoggedIn)addNotification('Upgrade plan coming soon!','info');
+  else navigate('login');
+}
+
+function renderPortfolios(){
+  var items=getPortfolios().filter(function(p){return p.status==='Published'});
+  var container=document.getElementById('portfolioItems');
+  var empty=document.getElementById('portfolioEmpty');
+  if(items.length===0){
+    empty.style.display='flex';
+    if(container)container.style.display='none';
+    return;
+  }
+  empty.style.display='none';
+  container.style.display='grid';
+  container.innerHTML='';
+  items.forEach(function(item,i){
+    var col=item.color||'from-blue-500/20';
+    var gradient=col.replace('/20','/30');
+    var card=document.createElement('div');
+    card.className='obs';
+    card.style.cssText='position:relative;aspect-ratio:4/5;background:linear-gradient(to bottom,'+gradient+',transparent);border:1px solid var(--border2);border-radius:24px;padding:32px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;transition:all 0.3s';
+    card.onclick=function(){if(item.link_url)window.open(item.link_url,'_blank');else dummyClick('Portfolio: '+item.title)};
+    card.innerHTML='<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);opacity:0;transition:opacity 0.3s" class="hov-overlay"></div>'+
+      (item.link_url?'<div style="position:absolute;inset:0;background-image:url('+item.link_url+');background-size:cover;background-position:center;opacity:0.4;transition:opacity 0.3s"></div>':'')+
+      '<div style="position:relative;z-index:10"><p style="font-size:12px;font-family:var(--font-mono);color:rgba(255,255,255,0.5);margin-bottom:8px">'+item.type+'</p><h4 style="font-size:30px;font-weight:700;margin-bottom:16px">'+item.title+'</h4>'+
+      '<div style="display:flex;gap:16px;transform:translateY(40px);transition:transform 0.3s" class="hov-actions">'+
+      '<button style="background:#fff;color:#000;padding:12px;border-radius:50%;border:none;cursor:pointer"><span class="icon" data-icon="layout-template" style="width:20px;height:20px"></span></button>'+
+      '<button style="background:rgba(255,255,255,0.1);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);padding:12px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);cursor:pointer"><span class="icon" data-icon="globe" style="width:20px;height:20px"></span></button></div></div>';
+    container.appendChild(card);
+    // hover effects
+    card.addEventListener('mouseenter',function(){
+      this.querySelector('.hov-overlay').style.opacity='1';
+      this.querySelector('.hov-actions').style.transform='translateY(0)';
+    });
+    card.addEventListener('mouseleave',function(){
+      this.querySelector('.hov-overlay').style.opacity='0';
+      this.querySelector('.hov-actions').style.transform='translateY(40px)';
+    });
+  });
+  renderIcons(container);
+  setTimeout(observeElements,100);
+}
+
+function updateNav(){
+  var actions=document.getElementById('navActions');
+  var mobileActions=document.getElementById('mobileMenuActions');
+  if(!actions||!mobileActions)return;
+  var html='';
+  if(state.isAdmin)html+='<button onclick="navigate(\'admin\')" class="btn-outline-cyan" style="margin-right:8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);color:var(--cyan2);border-radius:9999px;padding:6px 16px;font-size:14px;transition:all 0.2s;border:none;cursor:pointer">Admin Panel</button>';
+  if(state.isLoggedIn){
+    html+='<button onclick="navigate(\'dashboard\')" style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;background:none;border:none;color:inherit;cursor:pointer"><span class="icon" data-icon="layout-dashboard" style="width:16px;height:16px"></span> My Workspace</button>';
+    html+='<button onclick="handleLogout()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2);padding:8px 20px;border-radius:9999px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer;color:inherit" onmouseover="this.style.background=\'rgba(239,68,68,0.2)\';this.style.color=\'#F87171\';this.style.borderColor=\'rgba(239,68,68,0.3)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.05)\';this.style.color=\'\';this.style.borderColor=\'var(--border2)\'"><span class="icon" data-icon="log-out" style="width:16px;height:16px"></span> Keluar</button>';
+  }else{
+    html+='<button onclick="navigate(\'login\')" style="font-size:14px;font-weight:500;background:none;border:none;color:inherit;cursor:pointer">Sign In</button>';
+    html+='<button onclick="navigate(\'login\')" style="background:var(--blue);padding:8px 20px;border-radius:9999px;font-size:14px;font-weight:700;border:none;color:#fff;cursor:pointer">Sign Up Free</button>';
+  }
+  actions.innerHTML=html;
+  renderIcons(actions);
+
+  var mhtml='';
+  if(state.isAdmin)mhtml+='<button onclick="navigate(\'admin\')" style="text-align:left;color:var(--cyan2);font-weight:700;display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--cyan2);cursor:pointer"><span class="icon" data-icon="terminal" style="width:18px;height:18px"></span> Admin Panel</button>';
+  if(state.isLoggedIn){
+    mhtml+='<button onclick="navigate(\'dashboard\')" style="background:var(--cyan);color:#000;padding:16px;font-weight:700;border-radius:8px;text-align:center;border:none;cursor:pointer">Open Workspace</button>';
+    mhtml+='<button onclick="handleLogout()" style="text-align:left;color:#F87171;font-weight:700;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer"><span class="icon" data-icon="log-out" style="width:18px;height:18px"></span> Logout</button>';
+  }else{
+    mhtml+='<button onclick="navigate(\'login\')" style="background:var(--cyan);color:#000;padding:16px;font-weight:700;border-radius:8px;text-align:center;border:none;cursor:pointer">Sign In / Register</button>';
+  }
+  mobileActions.innerHTML=mhtml;
+  renderIcons(mobileActions);
+}
+
+// AI Builder
+function handleBuild(){
+  var input=document.getElementById('buildInput');
+  var prompt=input.value.trim();
+  if(!prompt){addNotification('Masukkan instruksi website impianmu terlebih dahulu!','warning');return}
+  if(state.isBuilding)return;
+  state.isBuilding=true;
+  state.buildStep=0;
+  addNotification('AI sedang menganalisis arsitektur...','ai');
+  document.getElementById('builderIdle').style.display='none';
+  document.getElementById('builderLog').style.display='block';
+  document.getElementById('logLines').innerHTML='<p style="color:#fff">&gt; Instruksi diterima: "'+prompt+'"</p>';
+
+  function addLogLine(text,isSuccess){
+    var lines=document.getElementById('logLines');
+    var p=document.createElement('p');
+    if(isSuccess){
+      p.innerHTML='<span style="color:#4ADE80;font-weight:700;display:block;margin-top:16px;border:1px solid rgba(74,222,128,0.3);background:rgba(74,222,128,0.1);padding:12px;border-radius:8px">&gt; '+text+'</span>';
+    }else{
+      p.innerHTML='<span style="opacity:0;animation:fadeInLeft 0.5s ease-out forwards;display:inline-block">&gt; '+text+'</span>';
+    }
+    lines.appendChild(p);
+  }
+
+  setTimeout(function(){state.buildStep=1;addLogLine('Membangun koneksi ke Local Inference Engine... [OK]')},800);
+  setTimeout(function(){state.buildStep=2;addLogLine('Melakukan query semantic ke PostgreSQL pgvector... [MATCH FOUND]')},2200);
+  setTimeout(function(){state.buildStep=3;addLogLine('Merakit struktur React Functional Components & Tailwind classes...')},3800);
+  setTimeout(function(){state.buildStep=4;addLogLine('SUKSES! Website siap untuk di-deploy ke Virtual DOM.',true)},5000);
+  setTimeout(function(){
+    state.isBuilding=false;
+    input.value='';
+    if(state.isLoggedIn){
+      addNotification('Selesai! Membuka Dashboard Workspace Anda...','success');
+      setTimeout(function(){navigate('dashboard')},2000);
+    }else{
+      addNotification('Selesai! Silakan Login/Daftar untuk menyimpan Workspace Anda.','success');
+      setTimeout(function(){navigate('login')},2000);
+    }
+  },6500);
+}
+
+// Login
+function initLoginPage(){
+  state.isLoginView=true;
+  var fields=document.getElementById('signupFields');
+  if(fields)fields.style.display='none';
+  var title=document.getElementById('loginTitle');
+  var subtitle=document.getElementById('loginSubtitle');
+  var btn=document.getElementById('loginSubmitBtn');
+  var toggleText=document.getElementById('loginToggleText');
+  if(title)title.textContent='Welcome Back.';
+  if(subtitle)subtitle.textContent='Login ke HARI DEV Workspace Anda.';
+  if(btn)btn.innerHTML='SIGN IN <span class="icon" data-icon="arrow-right"></span>';
+  if(toggleText)toggleText.textContent='Belum punya akses?';
+  var toggleBtn=toggleText?toggleText.nextElementSibling:null;
+  if(toggleBtn)toggleBtn.textContent='Request Akun';
+  var msg=document.getElementById('loginMessage');
+  if(msg)msg.innerHTML='';
+  if(btn)renderIcons(btn);
+}
+
+function toggleLoginView(){
+  state.isLoginView=!state.isLoginView;
+  var fields=document.getElementById('signupFields');
+  var title=document.getElementById('loginTitle');
+  var subtitle=document.getElementById('loginSubtitle');
+  var btn=document.getElementById('loginSubmitBtn');
+  var toggleText=document.getElementById('loginToggleText');
+  var toggleBtn=toggleText?toggleText.nextElementSibling:null;
+  var msg=document.getElementById('loginMessage');
+  if(msg)msg.innerHTML='';
+  if(state.isLoginView){
+    if(fields)fields.style.display='none';
+    if(title)title.textContent='Welcome Back.';
+    if(subtitle)subtitle.textContent='Login ke HARI DEV Workspace Anda.';
+    if(btn)btn.innerHTML='SIGN IN <span class="icon" data-icon="arrow-right"></span>';
+    if(toggleText)toggleText.textContent='Belum punya akses?';
+    if(toggleBtn)toggleBtn.textContent='Request Akun';
+  }else{
+    if(fields)fields.style.display='block';
+    if(title)title.textContent='Request Access.';
+    if(subtitle)subtitle.textContent='Kirim data diri untuk di-review oleh Admin.';
+    if(btn)btn.innerHTML='SUBMIT REQUEST <span class="icon" data-icon="arrow-right"></span>';
+    if(toggleText)toggleText.textContent='Sudah mengajukan akses?';
+    if(toggleBtn)toggleBtn.textContent='Sign In di sini';
+  }
+  if(btn)renderIcons(btn);
+}
+
+function handleLogin(e){
+  e.preventDefault();
+  var email=document.getElementById('loginEmail').value;
+  var password=document.getElementById('loginPassword').value;
+  var msgDiv=document.getElementById('loginMessage');
+
+  if(!state.isLoginView){
+    var name=document.getElementById('signupName').value;
+    var phone=document.getElementById('signupPhone').value;
+    var date=document.getElementById('signupDate').value;
+    if(!name||!phone||!date){
+      msgDiv.innerHTML='<div style="padding:16px;border-radius:12px;margin-bottom:24px;font-size:14px;display:flex;align-items:flex-start;gap:12px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);color:#F87171"><span class="icon" data-icon="alert-circle" style="width:18px;height:18px;flex-shrink:0"></span><p>Harap isi semua field!</p></div>';
+      renderIcons(msgDiv);
+      return;
+    }
+    msgDiv.innerHTML='<div style="padding:16px;border-radius:12px;margin-bottom:24px;font-size:14px;display:flex;align-items:flex-start;gap:12px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ADE80"><span class="icon" data-icon="check-circle" style="width:18px;height:18px;flex-shrink:0"></span><p>Pendaftaran berhasil! Akun Anda sedang direview oleh Admin. Harap tunggu persetujuan sebelum bisa login.</p></div>';
+    renderIcons(msgDiv);
+    document.getElementById('loginEmail').value='';
+    document.getElementById('loginPassword').value='';
+    if(document.getElementById('signupName'))document.getElementById('signupName').value='';
+    if(document.getElementById('signupPhone'))document.getElementById('signupPhone').value='';
+    if(document.getElementById('signupDate'))document.getElementById('signupDate').value='';
+    setTimeout(function(){if(state){state.isLoginView=true;toggleLoginView();msgDiv.innerHTML=''}},5000);
+    return false;
+  }
+
+  // Sign In
+  if(email==='admin@haridev.ai'&&password==='admin123'){
+    state.isLoggedIn=true;
+    state.isAdmin=true;
+    msgDiv.innerHTML='<div style="padding:16px;border-radius:12px;margin-bottom:24px;font-size:14px;display:flex;align-items:flex-start;gap:12px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ADE80"><span class="icon" data-icon="check-circle" style="width:18px;height:18px;flex-shrink:0"></span><p>Login berhasil! Mengarahkan ke Admin Panel...</p></div>';
+    renderIcons(msgDiv);
+    setTimeout(function(){navigate('admin')},1000);
+  }else if(email==='user@example.com'&&password==='user123'){
+    state.isLoggedIn=true;
+    state.isAdmin=false;
+    msgDiv.innerHTML='<div style="padding:16px;border-radius:12px;margin-bottom:24px;font-size:14px;display:flex;align-items:flex-start;gap:12px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ADE80"><span class="icon" data-icon="check-circle" style="width:18px;height:18px;flex-shrink:0"></span><p>Login berhasil! Mengarahkan ke Dashboard...</p></div>';
+    renderIcons(msgDiv);
+    setTimeout(function(){navigate('dashboard')},1000);
+  }else{
+    msgDiv.innerHTML='<div style="padding:16px;border-radius:12px;margin-bottom:24px;font-size:14px;display:flex;align-items:flex-start;gap:12px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);color:#F87171"><span class="icon" data-icon="alert-circle" style="width:18px;height:18px;flex-shrink:0"></span><p>Login gagal. Periksa kembali email dan password Anda.<br><small style="opacity:0.7">Demo: admin@haridev.ai / admin123 atau user@example.com / user123</small></p></div>';
+    renderIcons(msgDiv);
+  }
+  return false;
+}
+
+function handleLogout(){
+  state.isLoggedIn=false;
+  state.isAdmin=false;
+  addNotification('Berhasil keluar.','info');
+  navigate('home');
+}
+
+// ADMIN
+function initAdminPage(){
+  loadUsers();
+  loadHeroCMS();
+  loadPortfolioTable();
+  var bc=document.getElementById('adminBreadcrumb');
+  if(bc)bc.textContent='dashboard overview';
+}
+
+function openAdminSidebar(){document.getElementById('adminSidebar').classList.add('open')}
+function closeAdminSidebar(){document.getElementById('adminSidebar').classList.remove('open')}
+
+function switchAdminView(view){
+  document.querySelectorAll('#page-admin .admin-content-area').forEach(function(v){v.classList.remove('active')});
+  document.getElementById(view).classList.add('active');
+  document.querySelectorAll('.admin-menu-item').forEach(function(m){m.classList.remove('active')});
+  document.querySelectorAll('.admin-menu-item').forEach(function(m){
+    if(m.textContent.trim().toLowerCase().includes(view.replace('-view','').replace('-',' ')))m.classList.add('active');
+  });
+  var bc=document.getElementById('adminBreadcrumb');
+  if(bc)bc.textContent=view.replace('-view','').replace('-',' ');
+  closeAdminSidebar();
+  if(view==='users-view')loadUsers();
+  if(view==='cms-view'){loadHeroCMS();loadPortfolioTable()}
+}
+
+function switchCMSTab(tab,btn){
+  document.querySelectorAll('#cms-view .admin-content-area').forEach(function(t){t.classList.remove('active')});
+  document.getElementById(tab).classList.add('active');
+  document.querySelectorAll('.tabs .tab-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+}
+
+function loadUsers(){
+  var tbody=document.getElementById('usersTableBody');
+  if(!tbody)return;
+  var profiles=getProfiles();
+  var html='';
+  profiles.forEach(function(user){
+    var badgeClass=user.status==='approved'?'badge-green':user.status==='rejected'?'badge-red':'badge-yellow';
+    html+='<tr><td style="padding:20px;font-weight:700">'+(user.full_name||'N/A')+'</td><td style="padding:20px;color:var(--text2);font-size:14px">'+user.email+'</td><td style="padding:20px;text-align:center"><span class="badge '+badgeClass+'">'+user.status+'</span></td><td style="padding:20px;text-align:center">';
+    if(user.status==='pending'){
+      html+='<div style="display:flex;justify-content:center;gap:8px"><button onclick="approveUser(\''+user.id+'\')" style="padding:4px 12px;background:rgba(74,222,128,0.2);color:#4ADE80;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer">Approve</button><button onclick="rejectUser(\''+user.id+'\')" style="padding:4px 12px;background:rgba(248,113,113,0.2);color:#F87171;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer">Reject</button></div>';
+    }else{
+      html+='<span style="font-size:12px;color:var(--text4)">SELESAI</span>';
+    }
+    html+='</td></tr>';
+  });
+  tbody.innerHTML=html;
+}
+
+function approveUser(id){
+  var profiles=getProfiles();
+  profiles.forEach(function(u){if(u.id===id)u.status='approved'});
+  saveProfiles(profiles);
+  adminNotification('User berhasil di-approved!','success');
+  loadUsers();
+}
+
+function rejectUser(id){
+  var profiles=getProfiles();
+  profiles.forEach(function(u){if(u.id===id)u.status='rejected'});
+  saveProfiles(profiles);
+  adminNotification('User berhasil di-rejected!','success');
+  loadUsers();
+}
+
+function loadHeroCMS(){
+  var hero=getHeroData();
+  var el1=document.getElementById('heroBadgeText');
+  var el2=document.getElementById('heroTitle1');
+  var el3=document.getElementById('heroTitle2');
+  var el4=document.getElementById('heroDescInput');
+  if(el1)el1.value=hero.badge_text;
+  if(el2)el2.value=hero.title_line1;
+  if(el3)el3.value=hero.title_line2;
+  if(el4)el4.value=hero.description;
+}
+
+function saveHero(){
+  var hero={
+    badge_text:document.getElementById('heroBadgeText').value,
+    title_line1:document.getElementById('heroTitle1').value,
+    title_line2:document.getElementById('heroTitle2').value,
+    description:document.getElementById('heroDescInput').value
+  };
+  saveHeroData(hero);
+  adminNotification('Teks Landing Page berhasil diperbarui!','success');
+}
+
+function loadPortfolioTable(){
+  var tbody=document.getElementById('portfolioTableBody');
+  if(!tbody)return;
+  var items=getPortfolios();
+  var html='';
+  if(items.length===0){
+    html='<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--text3)">Belum ada portofolio.</td></tr>';
+  }else{
+    items.forEach(function(item){
+      var isPub=item.status==='Published';
+      html+='<tr><td style="padding:16px;font-weight:700">'+item.title+'</td><td style="padding:16px;font-size:14px;color:var(--text2)">'+item.type+'</td><td style="padding:16px;text-align:center">'+
+        '<button onclick="togglePortfolioStatus('+item.id+')" style="padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;'+
+        (isPub?'background:rgba(74,222,128,0.1);color:#4ADE80':'background:rgba(251,191,36,0.1);color:#FBBF24')+'">'+item.status+'</button></td>'+
+        '<td style="padding:16px;text-align:right"><button onclick="deletePortfolio('+item.id+')" style="padding:8px;background:rgba(248,113,113,0.1);color:#F87171;border-radius:6px;border:none;cursor:pointer"><span class="icon" data-icon="trash-2" style="width:16px;height:16px"></span></button></td></tr>';
+    });
+  }
+  tbody.innerHTML=html;
+  renderIcons(tbody);
+}
+
+function addPortfolio(){
+  var title=document.getElementById('newPortfolioTitle').value.trim();
+  var type=document.getElementById('newPortfolioType').value.trim();
+  if(!title||!type){adminNotification('Isi nama dan kategori!','error');return}
+  var items=getPortfolios();
+  var maxId=items.reduce(function(m,i){return Math.max(m,i.id)},0);
+  items.push({id:maxId+1,title:title,type:type,color:'from-blue-500/20',status:'Draft',link_url:''});
+  savePortfolios(items);
+  adminNotification('Portfolio ditambahkan!','success');
+  document.getElementById('newPortfolioTitle').value='';
+  document.getElementById('newPortfolioType').value='';
+  loadPortfolioTable();
+}
+
+function deletePortfolio(id){
+  var items=getPortfolios().filter(function(i){return i.id!==id});
+  savePortfolios(items);
+  adminNotification('Portfolio dihapus!','success');
+  loadPortfolioTable();
+}
+
+function togglePortfolioStatus(id){
+  var items=getPortfolios();
+  items.forEach(function(i){
+    if(i.id===id)i.status=i.status==='Published'?'Draft':'Published';
+  });
+  savePortfolios(items);
+  loadPortfolioTable();
+}
+
+// Init
+function init(){
+  // Check hash
+  var hash=window.location.hash.replace('#','')||'home';
+  if(['home','login','dashboard','admin'].indexOf(hash)<0)hash='home';
+  navigate(hash);
+}
+</script>
+</body>
+</html>
